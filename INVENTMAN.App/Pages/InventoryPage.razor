@@ -1,0 +1,29 @@
+﻿@page "/Inventory"
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Inventory.Interfaces
+
+@inject IEquipmentSearchUseCase EquipmentSearchUseCase
+
+@code{
+   
+
+    public string searchPhrase { get; set; } = string.Empty;
+
+    private void OnInventorySearch(string searchPhrase)
+    {
+        this.searchPhrase = searchPhrase;
+    }
+}
+
+<PageTitle>Inventory Page</PageTitle>
+<SearchInventoryComponent 
+    OnSearchInventory="OnInventorySearch">
+</SearchInventoryComponent>
+
+<InventoryListComponent searchPhrase="@searchPhrase" >
+</InventoryListComponent>
+
+
+   
+    
+

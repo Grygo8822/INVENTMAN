@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INVENTMAN.DataRepository.InMemory\INVENTMAN.DataRepository.InMemory.csproj" />
+    <ProjectReference Include="..\INVENTMAN.Entities\INVENTMAN.Entities.csproj" />
+    <ProjectReference Include="..\INVENTMAN.UseCases\INVENTMAN.UseCases.csproj" />
+  </ItemGroup>
+
+</Project>

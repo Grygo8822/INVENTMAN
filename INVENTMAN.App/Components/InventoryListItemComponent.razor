@@ -1,0 +1,18 @@
+﻿@using INVENTMAN.Entities
+@if (items != null && items.Count > 0)
+{
+    @foreach (var item in items)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <button></button>
+            </td>
+        </tr>
+    }
+}
+
+@code {
+    [Parameter]
+    public List<Item> items { get; set; } = new List<Item>();
+}

@@ -1,0 +1,34 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Inventory.Interfaces
+@inject IEquipmentSearchUseCase EquipmentSearchUseCase
+
+@code {
+    private List<Item> items = new List<Item>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = (await EquipmentSearchUseCase.ExecuteAsync()).ToList();
+    }
+
+    [Parameter]
+    public string searchPhrase { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        items = (await EquipmentSearchUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            </tr>
+    </thead>
+    <tbody>
+        <InventoryListItemComponent items="@items"></InventoryListItemComponent>
+    </tbody>
+</table>
