@@ -10,5 +10,7 @@ namespace INVENTMAN.UseCases.Equipment.Interfaces
     public interface IInventoryRepository
     {
          Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
+
+        Task AddItemAsync (Item item);
     }
 }

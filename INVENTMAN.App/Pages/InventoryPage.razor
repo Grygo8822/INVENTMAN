@@ -3,15 +3,21 @@
 @using INVENTMAN.UseCases.Inventory.Interfaces
 
 @inject IEquipmentSearchUseCase EquipmentSearchUseCase
+@inject NavigationManager NavigationManager
 
 @code{
-   
+
 
     public string searchPhrase { get; set; } = string.Empty;
 
     private void OnInventorySearch(string searchPhrase)
     {
         this.searchPhrase = searchPhrase;
+    }
+
+    private void AddItem()
+    {
+        NavigationManager.NavigateTo("/additem");
     }
 }
 
@@ -22,6 +28,13 @@
 
 <InventoryListComponent searchPhrase="@searchPhrase" >
 </InventoryListComponent>
+<br />
+
+<button
+    class="btn-primary"
+    type="button"
+    @onclick="AddItem"
+    >Add Item</button>
 
 
    

@@ -1,0 +1,67 @@
+﻿@page "/additem"
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Inventory.Interfaces
+
+@inject IEquipmentAddUseCase EquipmentAddUseCase
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+@code {
+    private Item item = new Item();
+
+    private async Task AddItem()
+    {
+        await EquipmentAddUseCase.ExecuteAsync(item);
+        ToastService.ShowSuccess("Sucessfuly added an item!");
+        NavigationManager.NavigateTo("/inventory");
+    }
+}
+
+<h3>Add Item</h3>
+<br />
+<EditForm Model="item" OnValidSubmit="AddItem">
+    @*TODO: Walidacja wejść*@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <div class="form-group">
+        <label for="name">Item name</label>
+        <InputText
+            id="name"
+            @bind-Value="item.Name"
+            class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="sn">Serial Number</label>
+        <InputText 
+            id="sn"
+            @bind-Value="item.SerialNumber"
+            class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="vendor">Vendor</label>
+        <InputText id="vendor"
+                   @bind-Value="item.Vendor"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="manufacturer">Manufacturer</label>
+        <InputText id="manufacturer"
+                   @bind-Value="item.Manufacturer"
+                   class="form-control">
+        </InputText>
+    </div>
+    <br />
+    <button 
+        type="submit"
+        class="btn btn-primary">
+        Add item
+    </button>
+
+</EditForm>

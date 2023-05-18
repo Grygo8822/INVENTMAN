@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrameworksAndDrivers", "Fra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INVENTMAN.DataRepository.InMemory", "INVENTMAN.DataRepository.InMemory\INVENTMAN.DataRepository.InMemory.csproj", "{4842B2A2-1CAA-4904-AA6E-42BA9660F3A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INVENTMAN.DataRepository.Postgresql", "INVENTMAN.DataRepository.Postgresql\INVENTMAN.DataRepository.Postgresql.csproj", "{65E9C963-A08E-41D5-AE92-F80B7109C85A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INVENTMAN.DataRepository.Postgresql", "INVENTMAN.DataRepository.Postgresql\INVENTMAN.DataRepository.Postgresql.csproj", "{65E9C963-A08E-41D5-AE92-F80B7109C85A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

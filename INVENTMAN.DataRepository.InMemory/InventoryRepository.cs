@@ -21,6 +21,17 @@ namespace INVENTMAN.DataRepository.InMemory
                     new Item{ ItemId = Guid.NewGuid(), Manufacturer = "HP", Name="EliteBook G8 840", SerialNumber="%AXDsc", Vendor = "MediaMarkt"}
                 };
         }
+
+        public Task AddItemAsync(Item item)
+        {
+            if (items.Any(x => x.ItemId.Equals(item.ItemId)))
+                return Task.CompletedTask;
+
+            items.Add(item);
+
+            return Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
