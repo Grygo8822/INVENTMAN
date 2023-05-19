@@ -12,5 +12,9 @@ namespace INVENTMAN.UseCases.Equipment.Interfaces
          Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
 
         Task AddItemAsync (Item item);
+
+        Task UpdateItemAsync(Item item);
+
+        Task<Item> GetItemByIdAsync(Guid itemId);
     }
 }

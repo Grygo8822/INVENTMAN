@@ -1,12 +1,16 @@
 ﻿@using INVENTMAN.Entities
+@inject NavigationManager NavigationManager
 @if (items != null && items.Count > 0)
 {
     @foreach (var item in items)
     {
+       
         <tr>
             <td>@item.Name</td>
+            <td>@item.Manufacturer</td>
+            <td>@item.SerialNumber</td>
             <td>
-                <button></button>
+                <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edit</button>
             </td>
         </tr>
     }
@@ -15,4 +19,9 @@
 @code {
     [Parameter]
     public List<Item> items { get; set; } = new List<Item>();
+
+    public void EditItem(Guid itemId)
+    {
+        NavigationManager.NavigateTo($"/edititem/{itemId}");
+    }
 }

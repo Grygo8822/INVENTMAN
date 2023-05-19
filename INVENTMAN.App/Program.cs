@@ -17,6 +17,10 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
 builder.Services.AddTransient<IEquipmentSearchUseCase, EquipmentSearchUseCase>();
 builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
+builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
+builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
+
+
 builder.Services.AddBlazoredToast();
 
 var app = builder.Build();

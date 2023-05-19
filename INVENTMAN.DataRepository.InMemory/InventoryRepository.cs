@@ -32,12 +32,41 @@ namespace INVENTMAN.DataRepository.InMemory
             return Task.CompletedTask;
         }
 
+        public async Task<Item> GetItemByIdAsync(Guid itemId)
+        {
+            var item =  items.First(x => x.ItemId == itemId);
+            var itemCopy = new Item
+            {
+                SerialNumber = item.SerialNumber,
+                Manufacturer = item.Manufacturer,
+                Vendor = item.Vendor,
+                Name = item.Name
+            };
+
+            return await Task.FromResult(itemCopy);
+        }
+
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             if (string.IsNullOrEmpty(name))
                 return await Task.FromResult(items);
 
             return items.Where(x => x.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public Task UpdateItemAsync(Item item)
+        {
+            var itemToEdit = items.FirstOrDefault(x => x.ItemId == item.ItemId);
+            if(itemToEdit != null)
+            {
+                itemToEdit.SerialNumber = item.SerialNumber;
+                itemToEdit.Manufacturer = item.Manufacturer;
+                itemToEdit.Vendor = item.Vendor;
+                itemToEdit.Name = item.Name;
+
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
