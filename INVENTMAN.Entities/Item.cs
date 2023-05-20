@@ -19,6 +19,7 @@ namespace INVENTMAN.Entities
         public Vendor? Vendor { get; set; }
 
         public ItemState ItemState { get; set; }
+        public string InvoiceId { get; set; }
 
         public Guid ManufacturerId { get; set; }
         public Manufacturer? Manufacturer { get; set; }

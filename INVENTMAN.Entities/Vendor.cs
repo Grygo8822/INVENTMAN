@@ -9,7 +9,7 @@ namespace INVENTMAN.Entities
 {
     public class Vendor
     {
-        public Guid ManufacturerId { get; set; }
+        public Guid VendorId { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
         public string Adress { get; set; } = string.Empty;

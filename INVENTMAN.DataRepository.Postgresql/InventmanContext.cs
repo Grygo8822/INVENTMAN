@@ -5,7 +5,7 @@ namespace INVENTMAN.DataRepository.Postgresql
 {
     public class InventmanContext : DbContext
     {
-        public InventmanContext(DbContextOptions options) :base(options)
+        public InventmanContext(DbContextOptions<InventmanContext> options) :base(options)
         {
 
         }

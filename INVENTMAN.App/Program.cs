@@ -1,6 +1,5 @@
 using Blazored.Toast;
 using INVENTMAN.App.Data;
-using INVENTMAN.DataRepository.InMemory;
 using INVENTMAN.DataRepository.Postgresql;
 using INVENTMAN.UseCases.Equipment;
 using INVENTMAN.UseCases.Equipment.Interfaces;
@@ -13,19 +12,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Docker");
+
+builder.Services.AddDbContext<InventmanContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-//builder.Services.AddSingleton<IInventoryRepository, InventoryRepository>();
-builder.Services.AddTransient<IEquipmentSearchUseCase, EquipmentSearchUseCase>();
-builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
-builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
-builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
 
-builder.Services.AddDbContext<InventmanContext>(options => {
-    options.UseNpgsql(connectionString);
-});
+builder.Services.AddSingleton<IInventoryRepository, InventoryEFCoreRepository>();
 
 
 builder.Services.AddDbContext<AccountDbContext>(options =>
@@ -38,6 +36,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.SignIn.RequireConfirmedEmail = false;
 }).AddEntityFrameworkStores<AccountDbContext>();
 
+builder.Services.AddTransient<IEquipmentSearchUseCase, EquipmentSearchUseCase>();
+builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
+builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
+builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
 
 builder.Services.AddBlazoredToast();
 
