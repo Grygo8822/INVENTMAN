@@ -14,9 +14,19 @@ namespace INVENTMAN.Entities
         public string Name { get; set; } = string.Empty;
         [Required]
         public string SerialNumber { get; set; } = string.Empty;
-        public string Vendor { get; set; } = string.Empty;
-        [Required]
-        public string Manufacturer { get; set; } = string.Empty;
+
+        public Guid VendorId { get; set; }
+        public Vendor? Vendor { get; set; }
+
+        
+        public Guid ManufacturerId { get; set; }
+        public Manufacturer? Manufacturer { get; set; }
+
+        public ItemType ItemType { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public Guid EmployeeId { get; set; }
+        public Employee? Employee { get; set; }
+
 
     }
 }

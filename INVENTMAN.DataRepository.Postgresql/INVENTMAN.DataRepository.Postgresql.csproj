@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\INVENTMAN.Entities\INVENTMAN.Entities.csproj" />
+    <ProjectReference Include="..\INVENTMAN.UseCases\INVENTMAN.UseCases.csproj" />
   </ItemGroup>
 
 </Project>
