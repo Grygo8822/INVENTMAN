@@ -18,13 +18,14 @@ namespace INVENTMAN.Entities
         public Guid VendorId { get; set; }
         public Vendor? Vendor { get; set; }
 
-        
+        public ItemState ItemState { get; set; }
+
         public Guid ManufacturerId { get; set; }
         public Manufacturer? Manufacturer { get; set; }
 
         public ItemType ItemType { get; set; }
         public string Description { get; set; } = string.Empty;
-        public Guid EmployeeId { get; set; }
+        public Guid? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
 
 
