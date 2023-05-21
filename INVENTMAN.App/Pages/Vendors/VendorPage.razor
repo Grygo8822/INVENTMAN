@@ -1,0 +1,43 @@
+﻿@page "/vendors"
+@using INVENTMAN.App.Components.Items
+@using INVENTMAN.App.Components.Vendor
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Vendors.Interfaces
+
+@inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
+@inject NavigationManager NavigationManager
+
+@code {
+
+
+    public string searchPhrase { get; set; } = string.Empty;
+
+    private void OnVendorSearch(string searchPhrase)
+    {
+        this.searchPhrase = searchPhrase;
+    }
+
+    private void AddVendor()
+    {
+        NavigationManager.NavigateTo("/add/vendor");
+    }
+}
+
+<PageTitle>Vendor Page</PageTitle>
+<SearchVendorComponent OnVendorSearch="OnVendorSearch">
+</SearchVendorComponent>
+
+<VendorListComponent searchPhrase="@searchPhrase">
+</VendorListComponent>
+<br />
+
+<button class="btn-primary"
+        type="button"
+        @onclick="AddVendor">
+    Add Item
+</button>
+
+
+
+
+

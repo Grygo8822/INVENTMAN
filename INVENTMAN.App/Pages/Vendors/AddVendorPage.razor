@@ -1,0 +1,57 @@
+﻿@page "/add/vendor"
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Vendors.Interfaces
+
+@inject IAddVendorUseCase AddVendorUseCase
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+@code {
+    private Vendor vendor = new Vendor();
+
+    private async Task AddVendor()
+    {
+        await AddVendorUseCase.ExecuteAsync(vendor);
+        ToastService.ShowSuccess("Sucessfuly added a manufacturer!");
+        NavigationManager.NavigateTo("/vendors");
+    }
+}
+
+<h3>Add Vendor</h3>
+<br />
+<EditForm Model="vendor" OnValidSubmit="AddVendor">
+    @*TODO: Walidacja wejść*@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="form-group">
+        <label for="name">Vendor name</label>
+        <InputText id="name"
+                   @bind-Value="vendor.Name"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="sn">Adress</label>
+        <InputText id="sn"
+                   @bind-Value="vendor.Adress"
+                   class="form-control">
+        </InputText>
+    </div>
+    <div class="form-group">
+        <label for="sn">Email adress</label>
+        <InputText id="sn"
+                   @bind-Value="vendor.EmailAdress"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <br />
+    <button type="submit"
+            class="btn btn-primary">
+        Add vendor
+    </button>
+
+</EditForm>

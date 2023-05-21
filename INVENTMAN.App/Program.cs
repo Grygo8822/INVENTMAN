@@ -5,6 +5,8 @@ using INVENTMAN.UseCases.Equipment;
 using INVENTMAN.UseCases.Equipment.Interfaces;
 using INVENTMAN.UseCases.Manufacturers;
 using INVENTMAN.UseCases.Manufacturers.Interfaces;
+using INVENTMAN.UseCases.Vendors;
+using INVENTMAN.UseCases.Vendors.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +27,8 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddSingleton<IInventoryRepository, InventoryEFCoreRepository>();
 builder.Services.AddSingleton<IManufacturersRepository, ManufacturerEFCoreRepository>();
+builder.Services.AddSingleton<IVendorRepository, VendorEFCoreRepository>();
+
 
 
 
@@ -45,8 +49,12 @@ builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
 builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
 builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
 
+//Vendor Use Cases
+builder.Services.AddTransient<IAddVendorUseCase, AddVendorUseCase>();
+builder.Services.AddTransient<ISearchVendorByNameUseCase, SearchVendorByNameUseCase>();
 
-//Manufcaturer UseCases
+
+//Manufcaturer Use Cases
 builder.Services.AddTransient<IAddManufacturerUseCase, AddManufacturerUseCase>();
 builder.Services.AddTransient<ISearchManufacturersByNameUseCase, SearchManufacturersByNameUseCase>();
 
@@ -61,9 +69,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-
-
 
 app.UseHttpsRedirection();
 

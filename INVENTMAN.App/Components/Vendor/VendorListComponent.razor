@@ -1,0 +1,39 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Vendors.Interfaces
+
+@inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
+
+@code {
+    private List<Vendor> vendors = new List<Vendor>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        vendors = (await SearchVendorByNameUseCase.ExecuteAsync()).ToList();
+    }
+
+    [Parameter]
+    public string searchPhrase { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        vendors = (await SearchVendorByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+            <th>Email Adress</th>
+            <th>Actions</th>
+
+            </tr>
+    </thead>
+    <tbody>
+        <VendorListItemComponent vendors="@vendors"></VendorListItemComponent>
+    </tbody>
+</table>
