@@ -1,0 +1,57 @@
+﻿@page "/add/manufacturer"
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Manufacturers.Interfaces
+
+@inject IAddManufacturerUseCase AddManufacturerUseCase
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+
+
+@code {
+    private Manufacturer manufacturer = new Manufacturer();
+
+    private async Task AddManufacturer()
+    {
+        await AddManufacturerUseCase.ExecuteAsync(manufacturer);
+        ToastService.ShowSuccess("Sucessfuly added a manufacturer!");
+        NavigationManager.NavigateTo("/manufacturers");
+    }
+}
+
+<h3>Add Item</h3>
+<br />
+<EditForm Model="manufacturer" OnValidSubmit="AddManufacturer">
+    @*TODO: Walidacja wejść*@
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="form-group">
+        <label for="name">Manufacturer name</label>
+        <InputText id="name"
+                   @bind-Value="manufacturer.Name"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="sn">Adress</label>
+        <InputText id="sn"
+                   @bind-Value="manufacturer.Adress"
+                   class="form-control">
+        </InputText>
+    </div>
+    <div class="form-group">
+        <label for="sn">Email adress</label>
+        <InputText id="sn"
+                   @bind-Value="manufacturer.EmailAdress"
+                   class="form-control">
+        </InputText>
+    </div>
+
+    <br />
+    <button type="submit"
+            class="btn btn-primary">
+        Add manufacturer
+    </button>
+
+</EditForm>

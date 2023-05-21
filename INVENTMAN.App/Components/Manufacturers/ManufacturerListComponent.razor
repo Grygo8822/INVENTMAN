@@ -1,0 +1,40 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Equipment.Interfaces
+@using INVENTMAN.UseCases.Manufacturers.Interfaces
+
+@inject ISearchManufacturersByNameUseCase SearchManufacturersByNameUseCase
+
+@code {
+    private List<Manufacturer> manufacturers = new List<Manufacturer>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        manufacturers = (await SearchManufacturersByNameUseCase.ExecuteAsync()).ToList();
+    }
+
+    [Parameter]
+    public string searchPhrase { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        manufacturers = (await SearchManufacturersByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manufacturer</th>
+            <th>Serial Number</th>
+            <th>Actions</th>
+
+            </tr>
+    </thead>
+    <tbody>
+        <ManufacturerListItemComponent manufacturers="@manufacturers"></ManufacturerListItemComponent>
+    </tbody>
+</table>

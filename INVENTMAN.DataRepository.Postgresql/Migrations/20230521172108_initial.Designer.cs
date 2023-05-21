@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace INVENTMAN.DataRepository.Postgresql.Migrations
 {
     [DbContext(typeof(InventmanContext))]
-    [Migration("20230520114254_init")]
-    partial class init
+    [Migration("20230521172108_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

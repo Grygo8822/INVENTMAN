@@ -10,7 +10,7 @@
             <td>@item.Manufacturer?.Name</td>
             <td>@item.SerialNumber</td>
             <td>
-                <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.EquipmentId))">Edit</button>
+                <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edit</button>
             </td>
         </tr>
     }

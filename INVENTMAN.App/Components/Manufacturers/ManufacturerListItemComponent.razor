@@ -1,0 +1,28 @@
+﻿@using INVENTMAN.Entities
+@inject NavigationManager NavigationManager
+
+@if (manufacturers != null && manufacturers.Count > 0)
+{
+    @foreach (var item in manufacturers)
+    {
+
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Adress</td>
+            <td>@item.EmailAdress</td>
+            <td>
+                <button class="btn btn-secondary" @onclick="@(()=> EditManufacturer(item.ManufacturerId))">Edit</button>
+            </td>
+        </tr>
+    }
+}
+
+@code {
+    [Parameter]
+    public List<Manufacturer> manufacturers { get; set; } = new List<Manufacturer>();
+
+    public void EditManufacturer(Guid itemId)
+    {
+        NavigationManager.NavigateTo($"/editamaufacturer/{itemId}");
+    }
+}

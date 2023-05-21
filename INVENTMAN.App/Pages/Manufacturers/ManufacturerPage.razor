@@ -1,0 +1,42 @@
+﻿@page "/manufacturers"
+@using INVENTMAN.App.Components.Manufacturers
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Manufacturers.Interfaces
+
+@inject ISearchManufacturersByNameUseCase SearchManufacturersByNameUseCase
+@inject NavigationManager NavigationManager
+
+@code {
+
+
+    public string searchPhrase { get; set; } = string.Empty;
+
+    private void OnManufacturerSearch(string searchPhrase)
+    {
+        this.searchPhrase = searchPhrase;
+    }
+
+    private void AddItem()
+    {
+        NavigationManager.NavigateTo("/add/manufacturer");
+    }
+}
+
+<PageTitle>Manufcaturers Page</PageTitle>
+<SearchManufacturerComponent OnManufacturerSearch="OnManufacturerSearch">
+</SearchManufacturerComponent>
+
+<ManufacturerListComponent searchPhrase="@searchPhrase">
+</ManufacturerListComponent>
+<br />
+
+<button class="btn-primary"
+        type="button"
+        @onclick="AddItem">
+    Add Item
+</button>
+
+
+
+
+
