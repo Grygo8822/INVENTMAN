@@ -1,13 +1,12 @@
 ﻿using INVENTMAN.Entities;
 using INVENTMAN.UseCases.Equipment.Interfaces;
-using INVENTMAN.UseCases.Inventory.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace INVENTMAN.UseCases.Inventory
+namespace INVENTMAN.UseCases.Equipment
 {
     public class EquipmentGetItemByIdUseCase : IEquipmentGetItemByIdUseCase
     {

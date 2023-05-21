@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INVENTMAN.Entities
 {
-    public enum ItemType
+    public enum EquipmentType
     {
         Laptop,
         Smartphone,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace INVENTMAN.Entities
 {
-    public enum ItemState
+    public enum EquipmentState
     {
         Unassigned,
         InRepair,

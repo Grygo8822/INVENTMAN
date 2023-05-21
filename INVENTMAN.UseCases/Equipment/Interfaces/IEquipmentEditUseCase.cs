@@ -1,6 +1,6 @@
 ﻿using INVENTMAN.Entities;
 
-namespace INVENTMAN.UseCases.Inventory.Interfaces
+namespace INVENTMAN.UseCases.Equipment.Interfaces
 {
     public interface IEquipmentEditUseCase
     {

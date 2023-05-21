@@ -1,6 +1,6 @@
-﻿using INVENTMAN.Entities;
+﻿
+using INVENTMAN.Entities;
 using INVENTMAN.UseCases.Equipment.Interfaces;
-using INVENTMAN.UseCases.Inventory.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

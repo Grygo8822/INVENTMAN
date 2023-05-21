@@ -3,8 +3,8 @@ using INVENTMAN.App.Data;
 using INVENTMAN.DataRepository.Postgresql;
 using INVENTMAN.UseCases.Equipment;
 using INVENTMAN.UseCases.Equipment.Interfaces;
-using INVENTMAN.UseCases.Inventory;
-using INVENTMAN.UseCases.Inventory.Interfaces;
+
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;

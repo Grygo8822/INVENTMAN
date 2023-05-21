@@ -9,7 +9,7 @@ namespace INVENTMAN.Entities
 {
     public class Item
     {
-        public Guid ItemId { get; set; }
+        public Guid EquipmentId { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
         [Required]
@@ -18,13 +18,13 @@ namespace INVENTMAN.Entities
         public Guid VendorId { get; set; }
         public Vendor? Vendor { get; set; }
 
-        public ItemState ItemState { get; set; }
-        public string InvoiceId { get; set; }
+        public EquipmentState ItemState { get; set; }
+        public string InvoiceId { get; set; } = string.Empty;
 
         public Guid ManufacturerId { get; set; }
         public Manufacturer? Manufacturer { get; set; }
 
-        public ItemType ItemType { get; set; }
+        public EquipmentType ItemType { get; set; }
         public string Description { get; set; } = string.Empty;
         public Guid? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
