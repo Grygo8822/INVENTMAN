@@ -1,6 +1,8 @@
 using Blazored.Toast;
 using INVENTMAN.App.Data;
 using INVENTMAN.DataRepository.Postgresql;
+using INVENTMAN.UseCases.Employees;
+using INVENTMAN.UseCases.Employees.Interfaces;
 using INVENTMAN.UseCases.Equipment;
 using INVENTMAN.UseCases.Equipment.Interfaces;
 using INVENTMAN.UseCases.Manufacturers;
@@ -28,6 +30,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IInventoryRepository, InventoryEFCoreRepository>();
 builder.Services.AddSingleton<IManufacturersRepository, ManufacturerEFCoreRepository>();
 builder.Services.AddSingleton<IVendorRepository, VendorEFCoreRepository>();
+builder.Services.AddSingleton<IEmployeeRepository, EmployeeEFCoreRepository>();
+
 
 
 
@@ -57,6 +61,10 @@ builder.Services.AddTransient<ISearchVendorByNameUseCase, SearchVendorByNameUseC
 //Manufcaturer Use Cases
 builder.Services.AddTransient<IAddManufacturerUseCase, AddManufacturerUseCase>();
 builder.Services.AddTransient<ISearchManufacturersByNameUseCase, SearchManufacturersByNameUseCase>();
+
+//Employee Use Cases
+builder.Services.AddTransient<IAddEmployeeUseCase, AddEmployeeUseCase>();
+builder.Services.AddTransient<ISearchEmployeeByNameUseCase, SearchEmployeeByNameUseCase>();
 
 builder.Services.AddBlazoredToast();
 

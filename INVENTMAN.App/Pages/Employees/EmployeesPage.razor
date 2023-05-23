@@ -1,0 +1,42 @@
+﻿@page "/employees"
+@using INVENTMAN.App.Components.Employees
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Employees.Interfaces
+
+@inject ISearchEmployeeByNameUseCase SearchEmployeeByNameUseCas
+@inject NavigationManager NavigationManager
+
+@code {
+
+
+    public string searchPhrase { get; set; } = string.Empty;
+
+    private void OnInventorySearch(string searchPhrase)
+    {
+        this.searchPhrase = searchPhrase;
+    }
+
+    private void AddEmployee()
+    {
+        NavigationManager.NavigateTo("/add/employee");
+    }
+}
+
+<PageTitle>Employees Page</PageTitle>
+<SearchEmployeeComponent OnSearchEmployees="OnInventorySearch">
+</SearchEmployeeComponent>
+
+<EmployeeListComponent searchPhrase="@searchPhrase">
+</EmployeeListComponent>
+<br />
+
+<button class="btn btn-primary"
+        type="button"
+        @onclick="AddEmployee">
+    Add Employee
+</button>
+
+
+
+
+

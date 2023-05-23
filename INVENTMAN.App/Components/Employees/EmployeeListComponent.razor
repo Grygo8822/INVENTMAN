@@ -1,0 +1,38 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Employees.Interfaces
+@inject ISearchEmployeeByNameUseCase SearchEmployeeByNameUseCase
+
+@code {
+    private List<Employee> employees = new List<Employee>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        employees = (await SearchEmployeeByNameUseCase.ExecuteAsync()).ToList();
+    }
+
+    [Parameter]
+    public string searchPhrase { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        employees = (await SearchEmployeeByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th>ManagerEmail</th>
+
+            </tr>
+    </thead>
+    <tbody>
+        <EmployeeListItemComponent employees="@employees"></EmployeeListItemComponent>
+    </tbody>
+</table>
