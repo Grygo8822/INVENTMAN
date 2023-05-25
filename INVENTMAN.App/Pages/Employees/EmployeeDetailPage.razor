@@ -1,0 +1,39 @@
+﻿@page "/employees/{employeeId:guid}"
+@using INVENTMAN.App.Components.Employees
+@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Employees.Interfaces
+
+@inject IGetEmployeeByIdUseCase GetEmployeeByIdUseCase
+
+@code {
+    [Parameter]
+    public Guid employeeId { get; set; } = Guid.NewGuid();
+
+    public Employee employee { get; set; } = new Employee();
+
+    public string employeeFullName { get { return $"{employee.Name} {employee.Surname}"; } }
+    
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        employee = await GetEmployeeByIdUseCase.ExecuteAsync(employeeId);
+    }
+}
+
+<PageTitle>Employee profile: @employeeFullName</PageTitle>
+
+<h3>@employeeFullName</h3>
+<small class="text-body-secondary">Unique identifier: @employee.EmployeeId</small>
+<br />
+<br />
+
+<p>Name: @employee.Name</p>
+<p>Surname: @employee.Surname</p>
+<p>Email: @employee.Email</p>
+<p>Manager: @employee.ManagerEmail</p>
+
+<EmployeeEquipmentListComponent employeeId="@employee.EmployeeId"></EmployeeEquipmentListComponent>
+
+
+

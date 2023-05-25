@@ -65,6 +65,8 @@ builder.Services.AddTransient<ISearchManufacturersByNameUseCase, SearchManufactu
 //Employee Use Cases
 builder.Services.AddTransient<IAddEmployeeUseCase, AddEmployeeUseCase>();
 builder.Services.AddTransient<ISearchEmployeeByNameUseCase, SearchEmployeeByNameUseCase>();
+builder.Services.AddTransient<IGetEmployeeByIdUseCase, GetEmployeeByIdUseCase>();
+builder.Services.AddTransient<IGetEmployeeByIdWithEqipmentUseCase, GetEmployeeByIdWithEqipmentUseCase>();
 
 builder.Services.AddBlazoredToast();
 

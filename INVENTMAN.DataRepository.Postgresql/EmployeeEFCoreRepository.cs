@@ -29,12 +29,31 @@ namespace INVENTMAN.DataRepository.Postgresql
 
         }
 
+        public async Task<Employee> GetEmployeeByIdAsync(Guid employeeId)
+        {
+            using var db = this.contextFacotry.CreateDbContext();
+            var employees = db.Employees as IQueryable<Employee>;
+
+            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync();
+
+
+        }
+
+        public async Task<Employee> GetEmployeeByIdWithEquipmentAsync(Guid employeeId)
+        {
+            using var db = this.contextFacotry.CreateDbContext();
+            var employees = db.Employees as IQueryable<Employee>;
+
+            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Employee>> GetEmployeesByNameAsync(string employeeName)
         {
             using var db = this.contextFacotry.CreateDbContext();
 
             var employees = db.Employees as IQueryable<Employee>;
-            return await employees.Where(x => x.Name.ToLower().IndexOf(employeeName.ToLower()) >= 0).ToListAsync();
+
+            return await employees.Include(x => x.Items).Where(x => x.Name.ToLower().IndexOf(employeeName.ToLower()) >= 0).ToListAsync();
         }
     }
 }

@@ -1,0 +1,7 @@
+﻿
+Employees
+
+"/employees"
+"/employees/add"
+"/employees/edit/{id}"
+"/employees/{id}"

@@ -15,6 +15,10 @@
             <td>
                 <button class="btn btn-secondary" @onclick="@(()=> EditEmployee(emp.EmployeeId))">Edit</button>
             </td>
+            
+             <td>
+                <button class="btn btn-secondary" @onclick="@(()=> ViewEmployeeDetailPage(emp.EmployeeId))">Details</button>
+            </td>
         </tr>
     }
 }
@@ -23,8 +27,13 @@
     [Parameter]
     public List<Employee> employees { get; set; } = new List<Employee>();
 
-    public void EditEmployee(Guid itemId)
+    public void EditEmployee(Guid employeeId)
     {
-        NavigationManager.NavigateTo($"/edit/employee/{itemId}");
+        NavigationManager.NavigateTo($"/employees/edit/{employeeId}");
+    }
+
+    public void ViewEmployeeDetailPage(Guid employeeId)
+    {
+        NavigationManager.NavigateTo($"/employees/{employeeId}");
     }
 }

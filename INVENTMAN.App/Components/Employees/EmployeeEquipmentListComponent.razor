@@ -1,0 +1,56 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Employees.Interfaces
+
+@inject IGetEmployeeByIdWithEqipmentUseCase GetEmployeeByIdWithEqipmentUseCase
+
+@code {
+    [Parameter]
+    public Guid employeeId { get; set; } = new Guid();
+
+    public Employee employee { get; set; } = new Employee();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        employee = await GetEmployeeByIdWithEqipmentUseCase.ExecuteAsync(employeeId);
+
+        await base.OnParametersSetAsync();
+    }
+}
+
+<h4>Items</h4>
+
+@if (employee == null || employee.Items == null || employee.Items.Count == 0)
+{
+    <p class="alert-warning">This employee has no items.</p>
+}
+else
+{
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>ManagerEmail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in employee.Items )
+            {
+            <tr>
+                <td>@item.Manufacturer</td>
+                <td>@item.Name</td>
+                <td>@item.SerialNumber</td>
+                <td>@item.ItemType</td>
+
+
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
