@@ -1,0 +1,43 @@
+﻿@using INVENTMAN.UseCases.Vendors.Interfaces
+@using INVENTMAN.Entities
+@inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
+@inject IVendorRepository VendorRepository
+
+@code {
+    [Parameter]
+    public string searchPhrase { get; set; } = string.Empty;
+
+    private List<Vendor>? vendors = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        vendors = await VendorRepository.GetVendorByNameAsync("") as List<Vendor>;
+
+        await base.OnInitializedAsync();
+    }
+
+    public async Task OnSearch()
+    {
+        vendors = await VendorRepository.GetVendorByNameAsync(searchPhrase) as List<Vendor>;
+
+    }
+}
+
+ <ul class="list-group">
+@if(vendors != null || vendors.Count <= 0)
+{
+   
+        @foreach (var vendor in vendors)
+        {
+            <li class="list-group-item">@vendor.Name</li>
+        }
+    
+}
+else
+{
+    <li class="list-group-disabled">There are no vendors registered. Add Vendors <a href="/vendors">here</a></li>
+}
+</ul>
+
+
+

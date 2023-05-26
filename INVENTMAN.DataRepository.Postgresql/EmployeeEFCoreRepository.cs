@@ -53,7 +53,7 @@ namespace INVENTMAN.DataRepository.Postgresql
 
             var employees = db.Employees as IQueryable<Employee>;
 
-            return await employees.Include(x => x.Items).Where(x => x.Name.ToLower().IndexOf(employeeName.ToLower()) >= 0).ToListAsync();
+            return await employees.Where(x => x.Name.ToLower().IndexOf(employeeName.ToLower()) >= 0).ToListAsync();
         }
     }
 }

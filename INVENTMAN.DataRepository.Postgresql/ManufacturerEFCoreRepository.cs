@@ -34,7 +34,10 @@ namespace INVENTMAN.DataRepository.Postgresql
         {
             using var db = this.contextFacotry.CreateDbContext();
             var manufacturers = db.Manufacturers as IQueryable<Manufacturer>;
-            return await manufacturers.Where(x => x.Name.ToLower().IndexOf(manufacturerName.ToLower()) >= 0).ToListAsync();
+            if(manufacturerName == "")
+                return await manufacturers.ToListAsync();
+            else
+                return await manufacturers.Where(x => x.Name.ToLower().IndexOf(manufacturerName.ToLower()) >= 0).ToListAsync();
 
 
         }

@@ -1,0 +1,49 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Vendors.Interfaces
+@inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
+
+
+<SearchVendorComponent OnVendorSearch="OnVendorSearch"></SearchVendorComponent>
+@if(vendors.Count > 0)
+{
+    <div style="overflow-y:auto;max-height:300px;border: 1px solid silver; padding-top:5px">
+        <ul style="list-style-type: none">
+            @foreach (var vendor in vendors)
+            {
+                <li @key="vendor.VendorId" class="border border-dark rounded-1 w-50 my-1"
+            style="cursor:pointer"
+            @onclick="@(async () => {await OnSelectVendor(vendor);})">
+                    @vendor.Name
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+
+@code
+{
+    private List<Vendor> vendors = new();
+
+    [Parameter]
+    public EventCallback<Vendor> OnVendorSelected { get; set; }
+
+    private async Task OnVendorSearch(string searchPhrase)
+    {
+        vendors = (await SearchVendorByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+    private async Task OnSelectVendor(Vendor vendor)
+    {
+        await OnVendorSelected.InvokeAsync(vendor);
+        vendors.Clear();
+
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        vendors = (await SearchVendorByNameUseCase.ExecuteAsync()).ToList();
+
+        await base.OnInitializedAsync();
+    }
+}

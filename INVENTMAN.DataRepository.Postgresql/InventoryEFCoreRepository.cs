@@ -12,20 +12,37 @@ namespace INVENTMAN.DataRepository.Postgresql
 {
     public class InventoryEFCoreRepository : IInventoryRepository
     {
-        
-        public Task AddItemAsync(Item item)
+        private readonly IDbContextFactory<InventmanContext> contextFactory;
+
+        public InventoryEFCoreRepository(IDbContextFactory<InventmanContext> contextFactory)
         {
-            throw new NotImplementedException();
+            this.contextFactory=contextFactory;
         }
 
-        public Task<Item> GetItemByIdAsync(Guid itemId)
+        public async Task AddItemAsync(Item item)
         {
-            throw new NotImplementedException();
+            using var db = this.contextFactory.CreateDbContext();
+            
+            await db.Items.AddAsync(item); 
+            await db.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
+        public async Task<Item> GetItemByIdAsync(Guid itemId)
         {
-            throw new NotImplementedException();
+            using var db = this.contextFactory.CreateDbContext();
+            var items = db.Items as IQueryable<Item>;
+
+            return await items.Where(x => x.ItemId == itemId).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
+        {
+            using var db = this.contextFactory.CreateDbContext();
+            var items = db.Items as IQueryable<Item>;
+
+            return await items.Where(x => x.Name.ToLower().IndexOf(name.ToLower()) >= 0).ToListAsync();
+
+
         }
 
         public Task UpdateItemAsync(Item item)

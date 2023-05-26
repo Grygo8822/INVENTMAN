@@ -1,0 +1,51 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Manufacturers.Interfaces
+@inject ISearchManufacturersByNameUseCase SearchManufacturersByNameUseCase
+
+<SearchManufacturerComponent 
+    OnManufacturerSearch="OnSearchInventory">
+</SearchManufacturerComponent>
+@if(manufacturers.Count > 0)
+{
+    <div style="overflow-y:auto;max-height:300px;border: 1px solid silver; padding-top:5px">
+        <ul style="list-style-type: none">
+            @foreach (var man in manufacturers)
+            {
+                <li 
+                    @key="man.ManufacturerId"
+                    style="cursor:pointer" class="border border-dark rounded-1 w-50 my-1"
+                    @onclick="@(async () => {await OnSelectManufacturer(man);})">
+                    @man.Name
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code
+{
+    private List<Manufacturer> manufacturers = new();
+
+    [Parameter]
+    public EventCallback<Manufacturer> OnManufacturerSelected { get; set; }
+
+    private async Task OnSearchInventory(string searchPhrase)
+    {
+        manufacturers = (await SearchManufacturersByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+    private async Task OnSelectManufacturer(Manufacturer manufacturer)
+    {
+        await OnManufacturerSelected.InvokeAsync(manufacturer);
+        manufacturers.Clear();
+
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        manufacturers = (await SearchManufacturersByNameUseCase.ExecuteAsync()).ToList();
+
+        await base.OnInitializedAsync();
+    }
+
+}

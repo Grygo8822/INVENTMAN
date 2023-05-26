@@ -1,4 +1,4 @@
-﻿@page "/Inventory"
+﻿@page "/equipment"
 @using INVENTMAN.App.Components.Items
 @using INVENTMAN.Entities
 @using INVENTMAN.UseCases.Equipment.Interfaces
@@ -18,7 +18,7 @@
 
     private void AddItem()
     {
-        NavigationManager.NavigateTo("/additem");
+        NavigationManager.NavigateTo("/equipment/add");
     }
 }
 

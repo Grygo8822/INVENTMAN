@@ -4,6 +4,9 @@
 @inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
 
 @code {
+    [Parameter]
+    public EventCallback<string> OnClickRow { get; set; }
+
     private List<Vendor> vendors = new List<Vendor>();
 
     protected override async Task OnInitializedAsync()
@@ -19,6 +22,11 @@
         base.OnParametersSet();
 
         vendors = (await SearchVendorByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+    private void OnClickTableRow()
+    {
+        OnClickRow.InvokeAsync("sh");
     }
 
 }

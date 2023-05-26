@@ -1,20 +1,71 @@
-﻿@page "/additem"
+﻿@page "/equipment/add"
+@using INVENTMAN.App.Components.Manufacturers
+@using INVENTMAN.App.Components.Vendor
 @using INVENTMAN.Entities
 @using INVENTMAN.UseCases.Equipment.Interfaces
+@using INVENTMAN.UseCases.Vendors.Interfaces
+@using INVENTMAN.UseCases.Manufacturers.Interfaces
+@using INVENTMAN.App.Components.Shared;
 
 @inject IEquipmentAddUseCase EquipmentAddUseCase
 @inject NavigationManager NavigationManager
 @inject IToastService ToastService
+@inject ISearchVendorByNameUseCase SearchVendorByNameUseCase
+@inject ISearchManufacturersByNameUseCase SearchManufacturersByNameUseCase
 
 
 @code {
     private Item item = new Item();
+    private List<Vendor>? vendors = new();
+    private List<Manufacturer>? manufacturers = new();
+
+    public Manufacturer manufacturerSelected { get; set; } = new();
+    public Vendor vendorSelected { get; set; } = new();
+
+
+
+
+
+
 
     private async Task AddItem()
     {
-        await EquipmentAddUseCase.ExecuteAsync(item);
-        ToastService.ShowSuccess("Sucessfuly added an item!");
-        NavigationManager.NavigateTo("/inventory");
+            item.ManufacturerId = manufacturerSelected.ManufacturerId;
+            item.VendorId = vendorSelected.VendorId;
+            try 
+            {
+                await EquipmentAddUseCase.ExecuteAsync(item);
+                ToastService.ShowSuccess("Sucessfuly added an item!");
+                NavigationManager.NavigateTo("/inventory");
+            }
+            catch(Exception e)
+            {
+                ToastService.ShowError("An error occured, no item was created.");
+            }
+            
+        
+
+       
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        vendors = await SearchVendorByNameUseCase.ExecuteAsync() as List<Vendor>;
+
+
+        manufacturers = await SearchManufacturersByNameUseCase.ExecuteAsync() as List<Manufacturer>;
+
+        await base.OnInitializedAsync();
+    }
+
+    private void OnManufacturerSelected(Manufacturer manufacturer)
+    {
+        manufacturerSelected = manufacturer;
+    }
+
+    private void OnVendorSelected(Vendor vendor)
+    {
+        vendorSelected = vendor;
     }
 }
 
@@ -25,7 +76,9 @@
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
-    <div class="form-group">
+    <div class="row">
+
+    <div class="col form-group">
         <label for="name">Item name</label>
         <InputText
             id="name"
@@ -34,7 +87,7 @@
         </InputText>
     </div>
 
-    <div class="form-group">
+    <div class="col form-group">
         <label for="sn">Serial Number</label>
         <InputText 
             id="sn"
@@ -42,22 +95,54 @@
             class="form-control">
         </InputText>
     </div>
+    </div>
 
-    @*<div class="form-group">
-        <label for="vendor">Vendor</label>
-        <InputText id="vendor"
-                   @bind-Value="item.Vendor"
+    <div class="form-group">
+        <label for="desc">Description</label>
+        <InputText id="desc"
+                   @bind-Value="item.Description"
                    class="form-control">
         </InputText>
     </div>
 
-    <div class="form-group">
-        <label for="manufacturer">Manufacturer</label>
-        <InputText id="manufacturer"
-                   @bind-Value="item.Manufacturer"
+    <div class="row">
+
+    <div class="col form-group">
+        <label for="type">Type</label>
+        <InputSelect id="type"
+                   @bind-Value="item.ItemType"
+                   class="form-control">
+                   @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
+                   {
+                       <option value="">@type</option>
+                   }
+        </InputSelect>
+    </div>
+
+    <div class="col form-group">
+        <label for="desc">Invoice code</label>
+        <InputText id="desc"
+                   @bind-Value="item.InvoiceId"
                    class="form-control">
         </InputText>
-    </div>*@
+    </div>
+
+    </div>
+
+    <div class="row">
+       
+    <div class="col form-group">
+        <label> Manufacturer </label>
+        <p class="border form-control">Selected: @manufacturerSelected.Name</p>
+        <SearchAndSelectManufacturerComponent  OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
+    </div>
+
+    <div class="col form-group">
+        <label> Vendor </label>
+        <p class="border form-control">Selected: @vendorSelected.Name</p>
+            <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
+    </div>
+    </div>
     <br />
     <button 
         type="submit"
