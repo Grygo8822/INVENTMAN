@@ -1,6 +1,7 @@
 ﻿using INVENTMAN.Entities;
 using INVENTMAN.UseCases.Equipment.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,34 @@ namespace INVENTMAN.DataRepository.Postgresql
             await db.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Item>> GetEquipment(string? name, 
+            EquipmentState? state, EquipmentType? type,
+            string? serialNumber, string? employeeName,
+            string? invoiceId, string? vendor, string? manufacturer)
+        {
+            using var db = this.contextFactory.CreateDbContext();
+            var items = db.Items.Include(x=>x.Employee).Include(x => x.Manufacturer).Include(x=> x.Vendor) as IQueryable<Item>;
+
+            var query = from it in items
+                        where
+                            (string.IsNullOrWhiteSpace(name) || it.Name.ToLower().IndexOf(name.ToLower()) >= 0) &&
+                            (!state.HasValue || it.ItemState.Equals(state.Value)) &&
+                            (!type.HasValue || it.ItemType.Equals(type.Value)) &&
+                            (string.IsNullOrWhiteSpace(serialNumber) || it.SerialNumber.ToLower().IndexOf(serialNumber.ToLower()) >= 0) &&
+                            (string.IsNullOrWhiteSpace(vendor) || it.Vendor.Name.ToLower().IndexOf(vendor.ToLower()) >= 0)&&
+                            (string.IsNullOrWhiteSpace(manufacturer) || it.Manufacturer.Name.ToLower().IndexOf(manufacturer.ToLower()) >= 0)&&
+                            (string.IsNullOrWhiteSpace(invoiceId) || it.InvoiceId.ToLower().IndexOf(invoiceId.ToLower()) >= 0)
+                        select it;
+
+            return await query.ToListAsync();
+        }
+
         public async Task<Item> GetItemByIdAsync(Guid itemId)
         {
             using var db = this.contextFactory.CreateDbContext();
             var items = db.Items as IQueryable<Item>;
+
+            
 
             return await items
                 .Include(x => x.Employee)
@@ -56,9 +81,32 @@ namespace INVENTMAN.DataRepository.Postgresql
 
         }
 
-        public Task UpdateItemAsync(Item item)
+        public async Task UpdateItemAsync(Item item)
         {
-            throw new NotImplementedException();
+            using var db = this.contextFactory.CreateDbContext();
+            var items = db.Items as IQueryable<Item>;
+
+            var itemToEdit = await items
+                .Include(x => x.Employee)
+                .Include(x => x.Manufacturer)
+                .Include(x => x.Vendor)
+                .Where(x => x.ItemId == item.ItemId)
+                .FirstOrDefaultAsync();
+
+            if(itemToEdit != null)
+            {
+                itemToEdit.SerialNumber = item.SerialNumber;
+                itemToEdit.Manufacturer = item.Manufacturer;
+                itemToEdit.Vendor = item.Vendor;
+                itemToEdit.Manufacturer = item.Manufacturer;
+                itemToEdit.Description = item.Description;
+                itemToEdit.Employee = item.Employee;
+                itemToEdit.InvoiceId = item.InvoiceId;
+                itemToEdit.ItemState = item.ItemState;
+                itemToEdit.ItemType = item.ItemType;
+            }
+
+            await db.SaveChangesAsync();
         }
     }
 }

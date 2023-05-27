@@ -16,5 +16,12 @@ namespace INVENTMAN.UseCases.Equipment.Interfaces
         Task UpdateItemAsync(Item item);
 
         Task<Item> GetItemByIdAsync(Guid itemId);
+
+        Task<IEnumerable<Item>> GetEquipment(string? name, EquipmentState? state,
+            EquipmentType? type, string? serialNumber,
+            string? employeeName, string? invoiceId,
+            string? vendor, string? manufacturer);
+
+        
     }
 }

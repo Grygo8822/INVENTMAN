@@ -52,6 +52,8 @@ builder.Services.AddTransient<IEquipmentSearchUseCase, EquipmentSearchUseCase>()
 builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
 builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
 builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
+builder.Services.AddTransient<IEquipmentSearchAdvancedUseCase, EquipmentSearchAdvancedUseCase>();
+
 
 //Vendor Use Cases
 builder.Services.AddTransient<IAddVendorUseCase, AddVendorUseCase>();

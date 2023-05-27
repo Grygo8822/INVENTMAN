@@ -3,23 +3,8 @@
 @inject IEquipmentSearchUseCase EquipmentSearchUseCase
 
 @code {
-    private List<Item> items = new List<Item>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        items = (await EquipmentSearchUseCase.ExecuteAsync()).ToList();
-    }
-
     [Parameter]
-    public string searchPhrase { get; set; } = string.Empty;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        base.OnParametersSet();
-
-        items = (await EquipmentSearchUseCase.ExecuteAsync(searchPhrase)).ToList();
-    }
-
+    public List<Item> items { get; set; } = new();
 }
 
 <table class="table">
@@ -30,11 +15,13 @@
             <th>Model</th>
             <th>Numer Seryjny</th>
             <th>Pracownik</th>
+            <th>Sprzedawca</th>
+            <th>Numer faktury</th>
             <th>Akcje</th>
 
             </tr>
     </thead>
     <tbody>
-        <InventoryListItemComponent items="@items"></InventoryListItemComponent>
+        <InventoryListItemComponent items="items"></InventoryListItemComponent>
     </tbody>
 </table>

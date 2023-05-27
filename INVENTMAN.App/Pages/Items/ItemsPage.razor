@@ -3,31 +3,44 @@
 @using INVENTMAN.Entities
 @using INVENTMAN.UseCases.Equipment.Interfaces
 
-@inject IEquipmentSearchUseCase EquipmentSearchUseCase
+@inject IEquipmentSearchAdvancedUseCase EquipmentSearchAdvancedUseCase
 @inject NavigationManager NavigationManager
 
 @code{
+    
 
+    public List<Item> items { get; set; } = new();
 
-    public string searchPhrase { get; set; } = string.Empty;
-
-    private void OnInventorySearch(string searchPhrase)
+    private async Task OnEquipmentSearch(ItemSearch itemSearch)
     {
-        this.searchPhrase = searchPhrase;
+        items = (await EquipmentSearchAdvancedUseCase.ExecuteAsync
+        (
+            state: itemSearch.SelectedState,
+            type: itemSearch.SelectedType,
+            name: itemSearch.Name,
+            serialNumber: itemSearch.Sn,
+            manufacturer: itemSearch.Man,
+            employeeName: itemSearch.Emp,
+            vendor: itemSearch.Ven,
+            invoiceId: itemSearch.Invoice
+        )).ToList();
     }
 
     private void AddItem()
     {
         NavigationManager.NavigateTo("/equipment/add");
     }
+
+    protected async override Task OnInitializedAsync()
+    {
+        items = (await EquipmentSearchAdvancedUseCase.ExecuteAsync(null, null, null, null, null, null, null, null)).ToList();
+    }
 }
 
 <PageTitle>Sprzęt</PageTitle>
-<SearchInventoryComponent 
-    OnSearchInventory="OnInventorySearch">
-</SearchInventoryComponent>
+<AdvancedSearchInventoryComponent OnItemSearchCallback="OnEquipmentSearch"></AdvancedSearchInventoryComponent>
 
-<InventoryListComponent searchPhrase="@searchPhrase" >
+<InventoryListComponent items="items">
 </InventoryListComponent>
 <br />
 
@@ -36,6 +49,8 @@
     type="button"
     @onclick="AddItem"
     >Dodaj przedmiot</button>
+
+
 
 
    

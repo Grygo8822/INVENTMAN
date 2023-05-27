@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace INVENTMAN.UseCases.Equipment
 {
-    public class EquipmentSearchAdvancedUseCase
+    public class EquipmentSearchAdvancedUseCase : IEquipmentSearchAdvancedUseCase
     {
         private readonly IInventoryRepository ivnetnoryRepository;
 
@@ -17,12 +17,12 @@ namespace INVENTMAN.UseCases.Equipment
             this.ivnetnoryRepository=ivnetnoryRepository;
         }
 
-        public async Task<IEnumerable<Item>> ExecuteAsync(string? name, EquipmentState? state, 
-            EquipmentType? type, string? serialNumber, 
-            string? employeeName,  string? invoicId, 
-            Vendor? vendor, Manufacturer? manufacturer)
+        public async Task<IEnumerable<Item>> ExecuteAsync(string? name, EquipmentState? state,
+            EquipmentType? type, string? serialNumber,
+            string? employeeName, string? invoiceId,
+            string? vendor, string? manufacturer)
         {
-
+            return await this.ivnetnoryRepository.GetEquipment(name, state, type, serialNumber, employeeName, invoiceId, vendor, manufacturer);
         }
     }
 }

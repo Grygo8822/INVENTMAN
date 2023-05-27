@@ -1,0 +1,84 @@
+﻿@using INVENTMAN.Entities
+
+@code{
+    private ItemSearch item = new();
+
+    [Parameter]
+    public EventCallback<ItemSearch> OnItemSearchCallback { get; set; }
+
+
+    private async Task OnSearch()
+    {
+        await OnItemSearchCallback.InvokeAsync(item);
+    }
+
+
+}
+
+<div class="row">
+    <div class="col">
+        <label for="type">Typ</label>
+        <select id="type"  @bind="item.SelectedType" class="form-control">
+            <option value="null">Wszystkie</option>
+            @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+
+    <div class="col">
+        <label for="state">Stan</label>
+        <select id="state" @bind="item.SelectedState" class="form-control">
+            <option value="null">Wszystkie</option>
+            @foreach (var type in Enum.GetValues(typeof(EquipmentState)))
+            {
+                <option value="@type">@type
+                </option>
+                
+            }
+            >
+        </select>
+    </div>
+
+    <div class="col">
+        <label for="man">Producent</label>
+        <input type="text" id="man" @bind-value="item.Man" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label for="name">Model</label>
+        <input type="text" id="name" @bind-value="item.Name" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label for="sn">Numer Seryjny</label>
+        <input type="text" id="sn" @bind-value="item.Sn" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label for="emp">Pracownik</label>
+        <input type="text" id="emp" @bind-value="item.Emp" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label for="ven">Sprzedawca</label>
+        <input type="text" id="ven" @bind-value="item.Ven" class="form-control" />
+    </div>
+
+    <div class="col">
+        <label for="invoice">Numer Faktury</label>
+        <input type="text" @bind-value="item.Invoice" id="invoice" class="form-control" />
+    </div>
+
+    <div class="col">
+        <br />
+        <button type="button"
+                @onclick="OnSearch"
+                class="btn-success input-group-text">
+            Wyszukaj
+        </button>
+    </div>
+    
+</div>
+
