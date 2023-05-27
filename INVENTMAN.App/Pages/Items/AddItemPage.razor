@@ -36,9 +36,9 @@
             {
                 await EquipmentAddUseCase.ExecuteAsync(item);
                 ToastService.ShowSuccess("Sucessfuly added an item!");
-                NavigationManager.NavigateTo("/inventory");
+                NavigationManager.NavigateTo("/equipment");
             }
-            catch(Exception e)
+            catch
             {
                 ToastService.ShowError("An error occured, no item was created.");
             }

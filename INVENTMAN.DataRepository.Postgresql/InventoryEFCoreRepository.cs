@@ -32,7 +32,12 @@ namespace INVENTMAN.DataRepository.Postgresql
             using var db = this.contextFactory.CreateDbContext();
             var items = db.Items as IQueryable<Item>;
 
-            return await items.Where(x => x.ItemId == itemId).FirstOrDefaultAsync();
+            return await items
+                .Include(x => x.Employee)
+                .Include(x => x.Manufacturer)
+                .Include(x => x.Vendor)
+                .Where(x => x.ItemId == itemId)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
@@ -40,7 +45,13 @@ namespace INVENTMAN.DataRepository.Postgresql
             using var db = this.contextFactory.CreateDbContext();
             var items = db.Items as IQueryable<Item>;
 
-            return await items.Where(x => x.Name.ToLower().IndexOf(name.ToLower()) >= 0).ToListAsync();
+        //TODO: Change this if you can to a bool if we want to include manufacturers
+            return await items
+                .Include(x => x.Employee)
+                .Include(x => x.Manufacturer)
+                .Where(x => x.Name.ToLower()
+                .IndexOf(name.ToLower()) >= 0)
+                .ToListAsync();
 
 
         }

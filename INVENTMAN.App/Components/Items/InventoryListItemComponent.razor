@@ -6,9 +6,21 @@
     {
        
         <tr>
-            <td>@item.Name</td>
+            <td>@item.ItemType</td>
             <td>@item.Manufacturer?.Name</td>
+            <td>@item.Name</td>
             <td>@item.SerialNumber</td>
+            <td>
+                @if(item.Employee ==null)
+                {
+                    <p>Unassigned</p>
+                }
+                else
+                {
+                    <p>@item.Employee.Name @item.Employee.Surname</p>
+                }
+
+            </td>
             <td>
                 <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edit</button>
             </td>
@@ -22,6 +34,6 @@
 
     public void EditItem(Guid itemId)
     {
-        NavigationManager.NavigateTo($"/edititem/{itemId}");
+        NavigationManager.NavigateTo($"/equipment/edit/{itemId}");
     }
 }
