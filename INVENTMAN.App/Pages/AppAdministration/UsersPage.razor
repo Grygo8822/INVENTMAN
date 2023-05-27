@@ -1,0 +1,54 @@
+﻿@page "/users"
+@using Microsoft.AspNetCore.Identity
+
+
+@attribute [Authorize(Policy = "Admin")]
+
+@inject UserManager<IdentityUser> UserManager
+@inject NavigationManager NavigationManager
+
+
+
+@if(users != null)
+{
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Użytkownik</th>
+                <th>Akcje</th>
+                
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var user in users)
+            {
+                <tr>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        <button class="btn btn-link" @onclick="@(() => ManageUser(user))">Zarządzaj uprawnieniami</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<IdentityUser>? users;
+
+    protected async  override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        users = UserManager.Users.ToList();
+    }
+
+    private void ManageUser(IdentityUser user)
+    {
+        NavigationManager.NavigateTo($"/users/manage/{user.Id}");
+    }
+}

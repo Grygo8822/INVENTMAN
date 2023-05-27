@@ -17,6 +17,17 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Docker");
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireAuthenticatedUser().RequireClaim("Users", "Adminstrate"));
+    options.AddPolicy("ItemEditors", policy => policy.RequireClaim("Items", "Edit"));
+    options.AddPolicy("ItemDeleters", policy => policy.RequireClaim("Items", "Delete"));
+    options.AddPolicy("ItemReaders", policy => policy.RequireClaim("Items", "Read"));
+
+
+
+});
+
 builder.Services.AddDbContextFactory<InventmanContext>(options =>
 {
     options.UseNpgsql(connectionString);

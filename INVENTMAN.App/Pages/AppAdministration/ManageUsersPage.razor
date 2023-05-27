@@ -1,0 +1,82 @@
+﻿@page "/users/manage/{userid}"
+@using Microsoft.AspNetCore.Identity
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+
+@attribute [Authorize(Policy = "Admin")]
+
+
+@inject NavigationManager NavigationManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (viewModel != null)
+{
+    <EditForm Model="viewModel" OnValidSubmit="SaveUser">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="text" class="form-control" readonly value="@viewModel.Email">
+        </div>
+        <div class="form-group">
+            <label for="subject">Zakres</label> 
+            <select id="subject" class="form-control"  @bind="viewModel.Subject">
+                <option value="null">Brak</option>
+                <option value="Adminstrate">Administrator</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+
+    </EditForm>
+}
+
+@code{
+    private IdentityUser? user;
+    private Claim? claim;
+    private bool userHadClaim = true;
+    private ManageUserViewModel? viewModel;
+
+    [Parameter]
+    public string? UserId { get; set; }
+
+    private async Task SaveUser()
+    {
+        if (userHadClaim)
+            UserManager.ReplaceClaimAsync(user, claim, new Claim("Users", viewModel.Subject));
+        else
+            await UserManager.AddClaimAsync(user, new Claim("Users", viewModel.Subject));
+
+        NavigationManager.NavigateTo("/users");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        user = UserManager.Users.First(x => x.Id == this.UserId);
+        var claims = await UserManager.GetClaimsAsync(user);
+
+        claim = claims.FirstOrDefault(x => x.Type == "Users");
+        if (claim == null)
+        {
+            userHadClaim = false;
+            claim = new Claim("Users", string.Empty);
+        }
+
+        viewModel = new ManageUserViewModel
+            {
+                Email = user.Email,
+                Subject = claim.Value
+            };
+
+    }
+    public class ManageUserViewModel
+    {
+        public string? Email { get; set; }
+
+        [Required]
+        public string? Subject { get; set; }
+    }
+}

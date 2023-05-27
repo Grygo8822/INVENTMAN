@@ -7,7 +7,10 @@
 @inject NavigationManager NavigationManager
 
 @code{
-    
+    private AuthenticationState authenticationState;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     public List<Item> items { get; set; } = new();
 
@@ -34,6 +37,9 @@
     protected async override Task OnInitializedAsync()
     {
         items = (await EquipmentSearchAdvancedUseCase.ExecuteAsync(null, null, null, null, null, null, null, null)).ToList();
+
+        if(authenticationStateTask != null)
+            authenticationState = await authenticationStateTask;
     }
 }
 
