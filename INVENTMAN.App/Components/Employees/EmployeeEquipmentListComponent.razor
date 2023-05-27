@@ -21,7 +21,7 @@
 
 @if (employee == null || employee.Items == null || employee.Items.Count == 0)
 {
-    <p class="alert-warning">This employee has no items.</p>
+    <p class="alert-warning">Ten pracownik nie posiada przedmiotów.</p>
 }
 else
 {
@@ -30,10 +30,10 @@ else
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Surname</th>
+                <th>Imie</th>
+                <th>Nazwisko</th>
                 <th>Email</th>
-                <th>ManagerEmail</th>
+                <th>Email Przełożonego</th>
             </tr>
         </thead>
         <tbody>

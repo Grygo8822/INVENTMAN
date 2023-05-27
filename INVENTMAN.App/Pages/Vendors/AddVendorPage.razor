@@ -18,7 +18,7 @@
     }
 }
 
-<h3>Add Vendor</h3>
+<h3>Dodaj sprzedawcę</h3>
 <br />
 <EditForm Model="vendor" OnValidSubmit="AddVendor">
     @*TODO: Walidacja wejść*@
@@ -26,7 +26,7 @@
     <ValidationSummary></ValidationSummary>
 
     <div class="form-group">
-        <label for="name">Vendor name</label>
+        <label for="name">Nazwa sprzedawcy</label>
         <InputText id="name"
                    @bind-Value="vendor.Name"
                    class="form-control">
@@ -34,14 +34,14 @@
     </div>
 
     <div class="form-group">
-        <label for="sn">Adress</label>
+        <label for="sn">Adres</label>
         <InputText id="sn"
                    @bind-Value="vendor.Adress"
                    class="form-control">
         </InputText>
     </div>
     <div class="form-group">
-        <label for="sn">Email adress</label>
+        <label for="sn">Email</label>
         <InputText id="sn"
                    @bind-Value="vendor.EmailAdress"
                    class="form-control">
@@ -51,7 +51,7 @@
     <br />
     <button type="submit"
             class="btn btn-primary">
-        Add vendor
+        Dodaj sprzedawcę
     </button>
 
 </EditForm>

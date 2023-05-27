@@ -4,21 +4,16 @@
 {
     @foreach (var emp in employees)
     {
-       
-        <tr>
+
+        <tr @onclick="@(()=> ViewEmployeeDetailPage(emp.EmployeeId))">
             <td>@emp.Name</td>
             <td>@emp.Surname</td>
             <td>@emp.Email</td>
             <td>@emp.ManagerEmail</td>
-
-            
             <td>
-                <button class="btn btn-secondary" @onclick="@(()=> EditEmployee(emp.EmployeeId))">Edit</button>
+                <button class="btn btn-secondary" @onclick="@(()=> EditEmployee(emp.EmployeeId))">Edytuj</button>
             </td>
-            
-             <td>
-                <button class="btn btn-secondary" @onclick="@(()=> ViewEmployeeDetailPage(emp.EmployeeId))">Details</button>
-            </td>
+           
         </tr>
     }
 }

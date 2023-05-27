@@ -13,7 +13,7 @@
             <td>
                 @if(item.Employee ==null)
                 {
-                    <p>Unassigned</p>
+                    <p>Nieprzypisano</p>
                 }
                 else
                 {
@@ -22,7 +22,7 @@
 
             </td>
             <td>
-                <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edit</button>
+                <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edytuj</button>
             </td>
         </tr>
     }

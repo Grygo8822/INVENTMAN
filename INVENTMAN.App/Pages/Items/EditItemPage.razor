@@ -31,6 +31,7 @@
     {
         item.ManufacturerId = manufacturerSelected.ManufacturerId;
         item.VendorId = vendorSelected.VendorId;
+
         try
         {
             await EquipmentEditUseCase.ExecuteAsync(item);
@@ -39,12 +40,8 @@
         }
         catch
         {
-            ToastService.ShowError("Wystąpił bła, nie dokonano edycji.");
+            ToastService.ShowError("Wystąpił błąd, nie dokonano edycji.");
         }
-
-
-
-
     }
 
     protected async override Task OnParametersSetAsync()
@@ -63,8 +60,6 @@
         vendors = await SearchVendorByNameUseCase.ExecuteAsync() as List<Vendor>;
         manufacturers = await SearchManufacturersByNameUseCase.ExecuteAsync() as List<Manufacturer>;
 
-        
-
         await base.OnInitializedAsync();
     }
 
@@ -79,7 +74,7 @@
     }
 }
 
-<h3>Edit Item</h3>
+<h3>Edytuj przedmiot</h3>
 <br />
 <EditForm Model="item" OnValidSubmit="EditItem">
     @*TODO: Walidacja wejść*@
@@ -89,7 +84,7 @@
     <div class="row">
 
         <div class="col form-group">
-            <label for="name">Item name</label>
+            <label for="name">Model</label>
             <InputText id="name"
                        @bind-Value="item.Name"
                        class="form-control">
@@ -97,7 +92,7 @@
         </div>
 
         <div class="col form-group">
-            <label for="sn">Serial Number</label>
+            <label for="sn">Numer seryjny</label>
             <InputText id="sn"
                        @bind-Value="item.SerialNumber"
                        class="form-control">
@@ -106,7 +101,7 @@
     </div>
 
     <div class="form-group">
-        <label for="desc">Description</label>
+        <label for="desc">Opis</label>
         <InputText id="desc"
                    @bind-Value="item.Description"
                    class="form-control">
@@ -116,7 +111,7 @@
     <div class="row">
 
         <div class="col form-group">
-            <label for="type">Type</label>
+            <label for="type">Typ</label>
             <InputSelect id="type"
                          @bind-Value="item.ItemType"
                          class="form-control">
@@ -128,7 +123,7 @@
         </div>
 
         <div class="col form-group">
-            <label for="desc">Invoice code</label>
+            <label for="desc">Numer faktury</label>
             <InputText id="desc"
                        @bind-Value="item.InvoiceId"
                        class="form-control">
@@ -140,13 +135,13 @@
     <div class="row">
 
         <div class="col form-group">
-            <label> Manufacturer </label>
+            <label> Producent </label>
             <p class="border form-control">Selected: @manufacturerSelected.Name</p>
             <SearchAndSelectManufacturerComponent OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
         </div>
 
         <div class="col form-group">
-            <label> Vendor </label>
+            <label> Sprzedawca </label>
             <p class="border form-control">Selected: @vendorSelected.Name</p>
             <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
         </div>
@@ -154,7 +149,7 @@
     <br />
     <button type="submit"
             class="btn btn-primary">
-        Add item
+        Edtuj przedmiot
     </button>
 
 </EditForm>

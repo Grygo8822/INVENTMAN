@@ -21,17 +21,17 @@
     }
 }
 
-<PageTitle>Employee profile: @employeeFullName</PageTitle>
+<PageTitle>Profil pracownika: @employeeFullName</PageTitle>
 
 <h3>@employeeFullName</h3>
-<small class="text-body-secondary">Unique identifier: @employee.EmployeeId</small>
+<small class="text-body-secondary">Identyfikator systemowy: @employee.EmployeeId</small>
 <br />
 <br />
 
-<p>Name: @employee.Name</p>
-<p>Surname: @employee.Surname</p>
+<p>Imię: @employee.Name</p>
+<p>Nazwisko: @employee.Surname</p>
 <p>Email: @employee.Email</p>
-<p>Manager: @employee.ManagerEmail</p>
+<p>Email Przełożonego: @employee.ManagerEmail</p>
 
 <EmployeeEquipmentListComponent employeeId="@employee.EmployeeId"></EmployeeEquipmentListComponent>
 
