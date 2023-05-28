@@ -17,7 +17,7 @@
                     @key="emp.EmployeeId"
                     style="cursor:pointer" class="border border-dark rounded-1 w-50 my-1"
             @onclick="@(async () => {await OnSelectEmployee(emp);})">
-                    @emp.Name
+                    @emp.Name @emp.Surname
                 </li>
             }
         </ul>

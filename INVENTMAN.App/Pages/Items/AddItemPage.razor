@@ -18,34 +18,28 @@
     private Item item = new Item();
     private List<Vendor>? vendors = new();
     private List<Manufacturer>? manufacturers = new();
+    private bool showManufacturersSelect = false;
+    private bool showVendorSelect = false;
+
 
     public Manufacturer manufacturerSelected { get; set; } = new();
     public Vendor vendorSelected { get; set; } = new();
 
 
-
-
-
-
-
     private async Task AddItem()
     {
-            item.ManufacturerId = manufacturerSelected.ManufacturerId;
-            item.VendorId = vendorSelected.VendorId;
-            try 
-            {
-                await EquipmentAddUseCase.ExecuteAsync(item);
-                ToastService.ShowSuccess("Pomyślnie utworzono przedmot!");
-                NavigationManager.NavigateTo("/equipment");
-            }
-            catch
-            {
-                ToastService.ShowError("Wystąpił błąd, przedmot nie został utworzony.");
-            }
-            
-        
-
-       
+        item.ManufacturerId = manufacturerSelected.ManufacturerId;
+        item.VendorId = vendorSelected.VendorId;
+        try 
+        {
+            await EquipmentAddUseCase.ExecuteAsync(item);
+            ToastService.ShowSuccess("Pomyślnie utworzono przedmot!");
+            NavigationManager.NavigateTo("/equipment");
+        }
+        catch(Exception e)
+        {
+            ToastService.ShowError("Wystąpił błąd, przedmot nie został utworzony.");
+        }
     }
 
     protected async override Task OnInitializedAsync()
@@ -61,88 +55,132 @@
     private void OnManufacturerSelected(Manufacturer manufacturer)
     {
         manufacturerSelected = manufacturer;
+        ToggleManufacturerSelect();
     }
 
     private void OnVendorSelected(Vendor vendor)
     {
         vendorSelected = vendor;
+        ToggleVendorSelect();
+    }
+
+    private void ToggleManufacturerSelect()
+    {
+        showManufacturersSelect = !showManufacturersSelect;
+    }
+
+    private void ToggleVendorSelect()
+    {
+        showVendorSelect = !showVendorSelect;
     }
 }
 
 <h3>Utwórz przedmiot</h3>
 <br />
 <EditForm Model="item" OnValidSubmit="AddItem">
-    @*TODO: Walidacja wejść*@
+    
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
     <div class="row">
 
-    <div class="col form-group">
-        <label for="name">Model</label>
-        <InputText
-            id="name"
-            @bind-Value="item.Name"
-            class="form-control">
-        </InputText>
+        <div class="col form-group">
+            <label for="name">Model</label>
+            <InputText
+                id="name"
+                @bind-Value="item.Name"
+                           class="form-control-sm d-flex w-100">
+            </InputText>
+        </div>
+
+        <div class="col form-group">
+            <label for="sn">Numer seryjny</label>
+            <InputText 
+                id="sn"
+                @bind-Value="item.SerialNumber"
+                           class="form-control-sm d-flex w-100">
+            </InputText>
+        </div>
     </div>
 
-    <div class="col form-group">
-        <label for="sn">Numer Seryjny</label>
-        <InputText 
-            id="sn"
-            @bind-Value="item.SerialNumber"
-            class="form-control">
-        </InputText>
+    <div class="row">
+        <div class="col form-group">
+            <label for="type">Typ</label>
+            <InputSelect id="type"
+                       @bind-Value="item.ItemType"
+                             class="form-control-sm d-flex w-100">
+                       @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
+                       {
+                           <option value="@type">@type</option>
+                       }
+            </InputSelect>
+        </div>
+
+        <div class="col form-group">
+            <label for="desc">Numer faktury</label>
+            <InputText id="desc"
+                       @bind-Value="item.InvoiceId"
+                           class="form-control-sm d-flex w-100">
+            </InputText>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col form-group">
+            <label for="warranty">Data zakończenia gwarancji</label>
+            <InputDate id="warranty" @bind-Value="item.EndOfWarranty" class="form-control-sm d-flex w-100">
+
+            </InputDate>
+        </div>
+        <div class="col">
+            <label for="ean">Kod Ean</label>
+            <InputText id="ean"
+                       @bind-Value="item.EanCode"
+                       class="form-control-sm d-flex w-100">
+            </InputText>
+        </div>
+
     </div>
+
+    <div class="row">
+        <div class="col ">
+            <div class="form-group mb-1">
+                
+            <label >Producent</label>
+            <input type="text" class="border disabled form-control" value="@manufacturerSelected.Name" readonly>
+            <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleManufacturerSelect">Zmień</button>
+        </div>
+        @if(showManufacturersSelect)
+        {
+                <SearchAndSelectManufacturerComponent OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
+        }
+    </div>
+        <div class="col ">
+            <div class="form-group mb-1">
+                <label> Sprzedawca </label>
+                <input type="text" class="border disabled form-control" value="@vendorSelected.Name" readonly>
+                <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleVendorSelect">Zmień</button>
+
+            </div>
+            @if (showVendorSelect)
+            {
+                <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
+
+            }
+        </div>
+    </div>
+
+    
 
     <div class="form-group">
         <label for="desc">Opis</label>
         <InputText id="desc"
                    @bind-Value="item.Description"
-                   class="form-control">
+                   class="form-control-sm d-flex w-100">
         </InputText>
     </div>
 
-    <div class="row">
 
-    <div class="col form-group">
-        <label for="type">Typ</label>
-        <InputSelect id="type"
-                   @bind-Value="item.ItemType"
-                   class="form-control">
-                   @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
-                   {
-                       <option value="@type">@type</option>
-                   }
-        </InputSelect>
-    </div>
-
-    <div class="col form-group">
-        <label for="desc">Numer faktury</label>
-        <InputText id="desc"
-                   @bind-Value="item.InvoiceId"
-                   class="form-control">
-        </InputText>
-    </div>
-
-    </div>
-
-    <div class="row">
-       
-    <div class="col form-group">
-        <label> Producent </label>
-        <p class="border form-control">Selected: @manufacturerSelected.Name</p>
-        <SearchAndSelectManufacturerComponent  OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
-    </div>
-
-    <div class="col form-group">
-        <label> Sprzedawca </label>
-        <p class="border form-control">Selected: @vendorSelected.Name</p>
-            <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
-    </div>
-    </div>
     <br />
     <button 
         type="submit"

@@ -23,6 +23,10 @@
 
     private List<Vendor>? vendors = new();
     private List<Manufacturer>? manufacturers = new();
+    private bool showManufacturersSelect = false;
+    private bool showVendorSelect = false;
+    private bool showEmployeeSelect = false;
+
 
     public Manufacturer manufacturerSelected { get; set; } = new();
     public Vendor vendorSelected { get; set; } = new();
@@ -34,7 +38,7 @@
         item.ManufacturerId = manufacturerSelected.ManufacturerId;
         item.VendorId = vendorSelected.VendorId;
 
-        if(employeeSelected != null)
+        if(employeeSelected != null && employeeSelected.EmployeeId != Guid.Empty)
             item.EmployeeId = employeeSelected.EmployeeId;
         else
             item.EmployeeId = null;
@@ -74,16 +78,37 @@
     private void OnManufacturerSelected(Manufacturer manufacturer)
     {
         manufacturerSelected = manufacturer;
+        ToggleManufacturerSelect();
+
     }
 
     private void OnVendorSelected(Vendor vendor)
     {
         vendorSelected = vendor;
+        ToggleVendorSelect();
+
     }
 
     private void OnEmployeeSelected(Employee employee)
     {
         employeeSelected = employee;
+        ToggleEmployeeSelect();
+
+    }
+
+    private void ToggleManufacturerSelect()
+    {
+        showManufacturersSelect = !showManufacturersSelect;
+    }
+
+    private void ToggleVendorSelect()
+    {
+        showVendorSelect = !showVendorSelect;
+    }
+
+    private void ToggleEmployeeSelect()
+    {
+        showEmployeeSelect = !showEmployeeSelect;
     }
 }
 
@@ -100,7 +125,7 @@
             <label for="name">Model</label>
             <InputText id="name"
                        @bind-Value="item.Name"
-                       class="form-control">
+                       class="form-control-sm d-flex w-100">
             </InputText>
         </div>
 
@@ -108,26 +133,17 @@
             <label for="sn">Numer seryjny</label>
             <InputText id="sn"
                        @bind-Value="item.SerialNumber"
-                       class="form-control">
+                       class="form-control-sm d-flex w-100">
             </InputText>
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="desc">Opis</label>
-        <InputText id="desc"
-                   @bind-Value="item.Description"
-                   class="form-control">
-        </InputText>
-    </div>
-
     <div class="row">
-
         <div class="col form-group">
             <label for="type">Typ</label>
             <InputSelect id="type"
                          @bind-Value="item.ItemType"
-                         class="form-control">
+                         class="form-control-sm d-flex w-100">
                 @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
                 {
                     <option value="@type">@type</option>
@@ -139,40 +155,77 @@
             <label for="desc">Numer faktury</label>
             <InputText id="desc"
                        @bind-Value="item.InvoiceId"
-                       class="form-control">
+                       class="form-control-sm d-flex w-100">
+            </InputText>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col form-group">
+            <label for="warranty">Data zakończenia gwarancji</label>
+            <InputDate id="warranty" @bind-Value="item.EndOfWarranty" class="form-control-sm d-flex w-100">
+
+            </InputDate>
+        </div>
+        <div class="col">
+            <label for="ean">Kod Ean</label>
+            <InputText id="ean"
+                       @bind-Value="item.EanCode"
+                       class="form-control-sm d-flex w-100">
             </InputText>
         </div>
 
     </div>
 
+
     <div class="row">
+        <div class="col ">
+            <div class="form-group mb-1">
 
-        <div class="col form-group">
-            <label> Producent </label>
-            <p class="border form-control">Wybrano: @manufacturerSelected.Name</p>
-            <SearchAndSelectManufacturerComponent OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
+                <label>Producent</label>
+                <input type="text" class="border disabled form-control" value="@manufacturerSelected.Name" readonly>
+                <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleManufacturerSelect">Zmień</button>
+            </div>
+            @if (showManufacturersSelect)
+            {
+                <SearchAndSelectManufacturerComponent OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
+            }
         </div>
+        <div class="col ">
+            <div class="form-group mb-1">
+                <label> Sprzedawca </label>
+                <input type="text" class="border disabled form-control" value="@vendorSelected.Name" readonly>
+                <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleVendorSelect">Zmień</button>
 
-        <div class="col form-group">
-            <label> Sprzedawca </label>
-            <p class="border form-control">Wynrano: @vendorSelected.Name</p>
-            <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
+            </div>
+            @if (showVendorSelect)
+            {
+                <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
+
+            }
         </div>
-
     </div>
 
-    <div class="col form-group">
-        <label> Pracownik </label>
-        @if(employeeSelected !=null)
+    <div class="form-group">
+        <label for="desc">Opis</label>
+        <InputText id="desc"
+                   @bind-Value="item.Description"
+                   class="form-control-sm d-flex w-100">
+        </InputText>
+    </div>
+
+    <div class="">
+        <div class="form-group mb-1">
+            <label> Pracownik </label>
+            <input type="text" class="border disabled form-control" value="@employeeSelected.Name @employeeSelected.Surname" readonly>
+            <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleEmployeeSelect">Zmień</button>
+
+        </div>
+        @if (showEmployeeSelect)
         {
-            <p class="border form-control">Wybrano: @employeeSelected.Name</p>
+            <SearchAndSelectEmployeeComponent OnEmployeeSelected="OnEmployeeSelected"></SearchAndSelectEmployeeComponent>
 
         }
-        else
-        {
-            <p class="border form-control">Wybrano: Nieprzypisano</p>
-        }
-        <SearchAndSelectEmployeeComponent OnEmployeeSelected="OnEmployeeSelected"></SearchAndSelectEmployeeComponent>
     </div>
 
     <br />

@@ -93,7 +93,6 @@ namespace INVENTMAN.DataRepository.Postgresql
             if(itemToEdit != null)
             {
                 itemToEdit.SerialNumber = item.SerialNumber;
-                itemToEdit.Manufacturer = item.Manufacturer;
                 itemToEdit.VendorId = item.VendorId;
                 itemToEdit.ManufacturerId = item.ManufacturerId;
                 itemToEdit.Description = item.Description;
@@ -101,6 +100,9 @@ namespace INVENTMAN.DataRepository.Postgresql
                 itemToEdit.InvoiceId = item.InvoiceId;
                 itemToEdit.ItemState = item.ItemState;
                 itemToEdit.ItemType = item.ItemType;
+                itemToEdit.EanCode = item.EanCode;
+                itemToEdit.EndOfWarranty = item.EndOfWarranty;
+                itemToEdit.Name = item.Name;
 
                 await db.SaveChangesAsync();
 
