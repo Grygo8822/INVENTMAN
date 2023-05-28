@@ -19,7 +19,11 @@ namespace INVENTMAN.UseCases.Equipment
         }
 
         public async Task ExecuteAsync(Item item)
-        {
+            {
+            if (item.ItemState == EquipmentState.Unassigned && item.EmployeeId != null)
+                item.ItemState = EquipmentState.Assigned;
+            else if (item.ItemState == EquipmentState.Assigned && item.EmployeeId == null)
+                item.ItemState = EquipmentState.Unassigned;
             await inventoryRepository.UpdateItemAsync(item);
         }
 

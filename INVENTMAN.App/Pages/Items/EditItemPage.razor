@@ -5,7 +5,7 @@
 @using INVENTMAN.UseCases.Equipment.Interfaces
 @using INVENTMAN.UseCases.Vendors.Interfaces
 @using INVENTMAN.UseCases.Manufacturers.Interfaces
-@using INVENTMAN.App.Components.Shared;
+@using INVENTMAN.App.Components.Employees;
 
 @inject IEquipmentEditUseCase EquipmentEditUseCase
 @inject IEquipmentGetItemByIdUseCase EquipmentGetItemByIdUseCase
@@ -26,11 +26,18 @@
 
     public Manufacturer manufacturerSelected { get; set; } = new();
     public Vendor vendorSelected { get; set; } = new();
+    public Employee employeeSelected { get; set; } = new();
+
 
     private async Task EditItem()
     {
         item.ManufacturerId = manufacturerSelected.ManufacturerId;
         item.VendorId = vendorSelected.VendorId;
+
+        if(employeeSelected != null)
+            item.EmployeeId = employeeSelected.EmployeeId;
+        else
+            item.EmployeeId = null;
 
         try
         {
@@ -38,9 +45,10 @@
             ToastService.ShowSuccess("Przedmot zedytowany pomyślnie!");
             NavigationManager.NavigateTo("/equipment");
         }
-        catch
+        catch(Exception e)
         {
             ToastService.ShowError("Wystąpił błąd, nie dokonano edycji.");
+            ToastService.ShowError(e.Message);
         }
     }
 
@@ -72,10 +80,15 @@
     {
         vendorSelected = vendor;
     }
+
+    private void OnEmployeeSelected(Employee employee)
+    {
+        employeeSelected = employee;
+    }
 }
 
-<h3>Edytuj przedmiot</h3>
-<br />
+<h4>Edytuj przedmiot</h4>
+
 <EditForm Model="item" OnValidSubmit="EditItem">
     @*TODO: Walidacja wejść*@
     <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -136,16 +149,32 @@
 
         <div class="col form-group">
             <label> Producent </label>
-            <p class="border form-control">Selected: @manufacturerSelected.Name</p>
+            <p class="border form-control">Wybrano: @manufacturerSelected.Name</p>
             <SearchAndSelectManufacturerComponent OnManufacturerSelected="OnManufacturerSelected"></SearchAndSelectManufacturerComponent>
         </div>
 
         <div class="col form-group">
             <label> Sprzedawca </label>
-            <p class="border form-control">Selected: @vendorSelected.Name</p>
+            <p class="border form-control">Wynrano: @vendorSelected.Name</p>
             <SearchAndSelectVendorComponent OnVendorSelected="OnVendorSelected"></SearchAndSelectVendorComponent>
         </div>
+
     </div>
+
+    <div class="col form-group">
+        <label> Pracownik </label>
+        @if(employeeSelected !=null)
+        {
+            <p class="border form-control">Wybrano: @employeeSelected.Name</p>
+
+        }
+        else
+        {
+            <p class="border form-control">Wybrano: Nieprzypisano</p>
+        }
+        <SearchAndSelectEmployeeComponent OnEmployeeSelected="OnEmployeeSelected"></SearchAndSelectEmployeeComponent>
+    </div>
+
     <br />
     <button type="submit"
             class="btn btn-primary">

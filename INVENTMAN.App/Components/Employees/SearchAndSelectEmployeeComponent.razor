@@ -1,0 +1,60 @@
+﻿@using INVENTMAN.Entities
+@using INVENTMAN.UseCases.Employees.Interfaces
+@inject ISearchEmployeeByNameUseCase SearchEmployeeByNameUseCase
+
+<SearchEmployeeComponent OnSearchEmployees="OnSearchEmployee">
+</SearchEmployeeComponent>
+@if(employees.Count > 0)
+{
+    <div style="overflow-y:auto;max-height:300px;border: 1px solid silver; padding-top:5px">
+        <ul style="list-style-type: none">
+            <li @onclick="@(async () => {await OnUnselectEmployee();})" style="cursor:pointer" class="border border-dark rounded-1 w-50 my-1">
+                Brak
+            </li>
+            @foreach (var emp in employees)
+            {
+                <li 
+                    @key="emp.EmployeeId"
+                    style="cursor:pointer" class="border border-dark rounded-1 w-50 my-1"
+            @onclick="@(async () => {await OnSelectEmployee(emp);})">
+                    @emp.Name
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code
+{
+    private List<Employee> employees = new();
+
+    [Parameter]
+    public EventCallback<Employee> OnEmployeeSelected { get; set; }
+
+    private async Task OnSearchEmployee(string searchPhrase)
+    {
+        employees = (await SearchEmployeeByNameUseCase.ExecuteAsync(searchPhrase)).ToList();
+    }
+
+    private async Task OnSelectEmployee(Employee employee)
+    {
+        await OnEmployeeSelected.InvokeAsync(employee);
+        employees.Clear();
+
+    }
+
+    private async Task OnUnselectEmployee()
+    {
+        await OnEmployeeSelected.InvokeAsync(null);
+        employees.Clear();
+
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        employees = (await SearchEmployeeByNameUseCase.ExecuteAsync()).ToList();
+
+        await base.OnInitializedAsync();
+    }
+
+}

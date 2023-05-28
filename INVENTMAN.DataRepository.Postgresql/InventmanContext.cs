@@ -10,12 +10,12 @@ namespace INVENTMAN.DataRepository.Postgresql
 
         }
 
-        public DbSet<Item>? Items{ get; set; }
-        public DbSet<Event>? Events { get; set; }
-        public DbSet<Manufacturer>? Manufacturers { get; set; }
-        public DbSet<Vendor>? Vendors { get; set; }
-        public DbSet<Employee>? Employees { get; set; }
-        public DbSet<Onboarding>? Onboardings { get; set; }
+        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<Event> Events { get; set; } = null!;
+        public DbSet<Manufacturer> Manufacturers { get; set; } = null!;
+        public DbSet<Vendor> Vendors { get; set; } = null!;
+        public DbSet<Employee> Employees { get; set; } = null!;
+        public DbSet<Onboarding> Onboardings { get; set; } = null!;
 
 
     }

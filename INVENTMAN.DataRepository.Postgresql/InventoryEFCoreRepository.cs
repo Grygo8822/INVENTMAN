@@ -42,8 +42,9 @@ namespace INVENTMAN.DataRepository.Postgresql
                             (!state.HasValue || it.ItemState.Equals(state.Value)) &&
                             (!type.HasValue || it.ItemType.Equals(type.Value)) &&
                             (string.IsNullOrWhiteSpace(serialNumber) || it.SerialNumber.ToLower().IndexOf(serialNumber.ToLower()) >= 0) &&
-                            (string.IsNullOrWhiteSpace(vendor) || it.Vendor.Name.ToLower().IndexOf(vendor.ToLower()) >= 0)&&
-                            (string.IsNullOrWhiteSpace(manufacturer) || it.Manufacturer.Name.ToLower().IndexOf(manufacturer.ToLower()) >= 0)&&
+                            (string.IsNullOrWhiteSpace(vendor) || it.Vendor!.Name.ToLower().IndexOf(vendor.ToLower()) >= 0)&&
+                            (string.IsNullOrWhiteSpace(manufacturer) || it.Manufacturer!.Name.ToLower().IndexOf(manufacturer.ToLower()) >= 0)&&
+                            (string.IsNullOrWhiteSpace(employeeName) || it.Employee!.Name.ToLower().IndexOf(employeeName.ToLower()) >= 0)&&
                             (string.IsNullOrWhiteSpace(invoiceId) || it.InvoiceId.ToLower().IndexOf(invoiceId.ToLower()) >= 0)
                         select it;
 
@@ -55,19 +56,18 @@ namespace INVENTMAN.DataRepository.Postgresql
             using var db = this.contextFactory.CreateDbContext();
             var items = db.Items as IQueryable<Item>;
 
-            
-
             return await items
                 .Include(x => x.Employee)
                 .Include(x => x.Manufacturer)
                 .Include(x => x.Vendor)
                 .Where(x => x.ItemId == itemId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync() ?? new Item();
         }
 
         public async Task<IEnumerable<Item>> GetItemsByNameAsync(string name)
         {
             using var db = this.contextFactory.CreateDbContext();
+
             var items = db.Items as IQueryable<Item>;
 
         //TODO: Change this if you can to a bool if we want to include manufacturers
@@ -87,9 +87,6 @@ namespace INVENTMAN.DataRepository.Postgresql
             var items = db.Items as IQueryable<Item>;
 
             var itemToEdit = await items
-                .Include(x => x.Employee)
-                .Include(x => x.Manufacturer)
-                .Include(x => x.Vendor)
                 .Where(x => x.ItemId == item.ItemId)
                 .FirstOrDefaultAsync();
 
@@ -97,16 +94,18 @@ namespace INVENTMAN.DataRepository.Postgresql
             {
                 itemToEdit.SerialNumber = item.SerialNumber;
                 itemToEdit.Manufacturer = item.Manufacturer;
-                itemToEdit.Vendor = item.Vendor;
-                itemToEdit.Manufacturer = item.Manufacturer;
+                itemToEdit.VendorId = item.VendorId;
+                itemToEdit.ManufacturerId = item.ManufacturerId;
                 itemToEdit.Description = item.Description;
-                itemToEdit.Employee = item.Employee;
+                itemToEdit.EmployeeId = item.EmployeeId;
                 itemToEdit.InvoiceId = item.InvoiceId;
                 itemToEdit.ItemState = item.ItemState;
                 itemToEdit.ItemType = item.ItemType;
+
+                await db.SaveChangesAsync();
+
             }
 
-            await db.SaveChangesAsync();
         }
     }
 }

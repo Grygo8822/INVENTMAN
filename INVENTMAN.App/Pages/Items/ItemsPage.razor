@@ -7,10 +7,10 @@
 @inject NavigationManager NavigationManager
 
 @code{
-    private AuthenticationState authenticationState;
+    private AuthenticationState? authenticationState;
 
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
 
     public List<Item> items { get; set; } = new();
 

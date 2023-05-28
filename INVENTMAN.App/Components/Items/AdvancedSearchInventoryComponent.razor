@@ -2,6 +2,7 @@
 
 @code{
     private ItemSearch item = new();
+    
 
     [Parameter]
     public EventCallback<ItemSearch> OnItemSearchCallback { get; set; }
@@ -19,7 +20,7 @@
     <div class="col">
         <label for="type">Typ</label>
         <select id="type"  @bind="item.SelectedType" class="form-control">
-            <option value="null">Wszystkie</option>
+            <option value="">Wszystkie</option>
             @foreach (var type in Enum.GetValues(typeof(EquipmentType)))
             {
                 <option value="@type">@type</option>
@@ -30,7 +31,7 @@
     <div class="col">
         <label for="state">Stan</label>
         <select id="state" @bind="item.SelectedState" class="form-control">
-            <option value="null">Wszystkie</option>
+            <option value="">Wszystkie</option>
             @foreach (var type in Enum.GetValues(typeof(EquipmentState)))
             {
                 <option value="@type">@type

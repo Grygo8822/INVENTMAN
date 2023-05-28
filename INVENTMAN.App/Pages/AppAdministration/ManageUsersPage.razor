@@ -27,6 +27,7 @@
                 <option value="Adminstrate">Administrator</option>
             </select>
         </div>
+        <br/>
         <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
 
     </EditForm>
@@ -36,20 +37,10 @@
     private IdentityUser? user;
     private Claim? claim;
     private bool userHadClaim = true;
-    private ManageUserViewModel? viewModel;
+    private ManageUserViewModel viewModel = new();
 
     [Parameter]
     public string? UserId { get; set; }
-
-    private async Task SaveUser()
-    {
-        if (userHadClaim)
-            UserManager.ReplaceClaimAsync(user, claim, new Claim("Users", viewModel.Subject));
-        else
-            await UserManager.AddClaimAsync(user, new Claim("Users", viewModel.Subject));
-
-        NavigationManager.NavigateTo("/users");
-    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -72,11 +63,22 @@
             };
 
     }
+
+    private async Task SaveUser()
+    {
+        if (userHadClaim)
+            await UserManager.ReplaceClaimAsync(user, claim, new Claim("Users", viewModel.Subject));
+        else
+            await UserManager.AddClaimAsync(user, new Claim("Users", viewModel.Subject));
+
+        NavigationManager.NavigateTo("/users");
+    }
+
     public class ManageUserViewModel
     {
-        public string? Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
-        public string? Subject { get; set; }
+        public string Subject { get; set; } = string.Empty;
     }
 }

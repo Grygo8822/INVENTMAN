@@ -34,7 +34,7 @@ namespace INVENTMAN.DataRepository.Postgresql
             using var db = this.contextFacotry.CreateDbContext();
             var employees = db.Employees as IQueryable<Employee>;
 
-            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync();
+            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync() ?? new Employee();
 
 
         }
@@ -44,7 +44,7 @@ namespace INVENTMAN.DataRepository.Postgresql
             using var db = this.contextFacotry.CreateDbContext();
             var employees = db.Employees as IQueryable<Employee>;
 
-            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync();
+            return await employees.Where(x => x.EmployeeId == employeeId).FirstOrDefaultAsync() ?? new Employee();
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesByNameAsync(string employeeName)

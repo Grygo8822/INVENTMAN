@@ -29,4 +29,14 @@
     <ProjectReference Include="..\INVENTMAN.UseCases\INVENTMAN.UseCases.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Components\Employees\SearchAndSelectEmployeeComponent.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Shared\" />
+  </ItemGroup>
+
 </Project>

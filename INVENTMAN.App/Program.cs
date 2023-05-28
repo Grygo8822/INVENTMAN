@@ -38,10 +38,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 
-builder.Services.AddSingleton<IInventoryRepository, InventoryEFCoreRepository>();
-builder.Services.AddSingleton<IManufacturersRepository, ManufacturerEFCoreRepository>();
-builder.Services.AddSingleton<IVendorRepository, VendorEFCoreRepository>();
-builder.Services.AddSingleton<IEmployeeRepository, EmployeeEFCoreRepository>();
+builder.Services.AddScoped<IInventoryRepository, InventoryEFCoreRepository>();
+builder.Services.AddScoped<IManufacturersRepository, ManufacturerEFCoreRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorEFCoreRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeEFCoreRepository>();
 
 
 
