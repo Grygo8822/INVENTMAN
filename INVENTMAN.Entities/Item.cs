@@ -27,7 +27,7 @@ namespace INVENTMAN.Entities
         public Guid ManufacturerId { get; set; }
         public Manufacturer? Manufacturer { get; set; }
         [Required]
-        public DateTime EndOfWarranty { get; set;}
+        public DateOnly EndOfWarranty { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         [Required]
         public EquipmentType ItemType { get; set; }
         public string Description { get; set; } = string.Empty;
