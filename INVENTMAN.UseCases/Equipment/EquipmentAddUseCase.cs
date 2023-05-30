@@ -10,9 +10,9 @@ namespace INVENTMAN.UseCases.Equipment
 {
     public class EquipmentAddUseCase : IEquipmentAddUseCase
     {
-        private readonly IInventoryRepository inventoryRepository;
+        private readonly IEquipmentRepository inventoryRepository;
 
-        public EquipmentAddUseCase(IInventoryRepository inventoryRepository)
+        public EquipmentAddUseCase(IEquipmentRepository inventoryRepository)
         {
             this.inventoryRepository=inventoryRepository;
         }

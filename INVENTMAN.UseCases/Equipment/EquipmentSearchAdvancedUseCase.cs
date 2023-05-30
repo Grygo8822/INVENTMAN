@@ -10,9 +10,9 @@ namespace INVENTMAN.UseCases.Equipment
 {
     public class EquipmentSearchAdvancedUseCase : IEquipmentSearchAdvancedUseCase
     {
-        private readonly IInventoryRepository ivnetnoryRepository;
+        private readonly IEquipmentRepository ivnetnoryRepository;
 
-        public EquipmentSearchAdvancedUseCase(IInventoryRepository ivnetnoryRepository)
+        public EquipmentSearchAdvancedUseCase(IEquipmentRepository ivnetnoryRepository)
         {
             this.ivnetnoryRepository=ivnetnoryRepository;
         }

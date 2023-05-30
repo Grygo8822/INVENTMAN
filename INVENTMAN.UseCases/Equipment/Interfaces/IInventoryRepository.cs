@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace INVENTMAN.UseCases.Equipment.Interfaces
 {
-    public interface IInventoryRepository
+    public interface IEquipmentRepository
     {
          Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
 

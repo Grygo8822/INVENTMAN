@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace INVENTMAN.DataRepository.Postgresql
 {
-    public class InventoryEFCoreRepository : IInventoryRepository
+    public class EquipmentEFCoreRepository : IEquipmentRepository
     {
         private readonly IDbContextFactory<InventmanContext> contextFactory;
 
-        public InventoryEFCoreRepository(IDbContextFactory<InventmanContext> contextFactory)
+        public EquipmentEFCoreRepository(IDbContextFactory<InventmanContext> contextFactory)
         {
             this.contextFactory=contextFactory;
         }

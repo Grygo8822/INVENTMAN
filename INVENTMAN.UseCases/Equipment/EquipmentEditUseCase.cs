@@ -11,8 +11,8 @@ namespace INVENTMAN.UseCases.Equipment
 {
     public class EquipmentEditUseCase : IEquipmentEditUseCase
     {
-        private readonly IInventoryRepository inventoryRepository;
-        public EquipmentEditUseCase(IInventoryRepository inventoryRepository)
+        private readonly IEquipmentRepository inventoryRepository;
+        public EquipmentEditUseCase(IEquipmentRepository inventoryRepository)
         {
             this.inventoryRepository = inventoryRepository;
 

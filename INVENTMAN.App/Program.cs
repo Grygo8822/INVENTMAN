@@ -38,7 +38,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 
-builder.Services.AddScoped<IInventoryRepository, InventoryEFCoreRepository>();
+builder.Services.AddScoped<IEquipmentRepository, EquipmentEFCoreRepository>();
 builder.Services.AddScoped<IManufacturersRepository, ManufacturerEFCoreRepository>();
 builder.Services.AddScoped<IVendorRepository, VendorEFCoreRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeEFCoreRepository>();
