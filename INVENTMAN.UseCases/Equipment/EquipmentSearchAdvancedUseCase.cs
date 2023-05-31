@@ -10,11 +10,11 @@ namespace INVENTMAN.UseCases.Equipment
 {
     public class EquipmentSearchAdvancedUseCase : IEquipmentSearchAdvancedUseCase
     {
-        private readonly IEquipmentRepository ivnetnoryRepository;
+        private readonly IEquipmentRepository equipmentRepository;
 
-        public EquipmentSearchAdvancedUseCase(IEquipmentRepository ivnetnoryRepository)
+        public EquipmentSearchAdvancedUseCase(IEquipmentRepository equipmentRepository)
         {
-            this.ivnetnoryRepository=ivnetnoryRepository;
+            this.equipmentRepository=equipmentRepository;
         }
 
         public async Task<IEnumerable<Item>> ExecuteAsync(string? name, EquipmentState? state,
@@ -22,7 +22,8 @@ namespace INVENTMAN.UseCases.Equipment
             string? employeeName, string? invoiceId,
             string? vendor, string? manufacturer)
         {
-            return await this.ivnetnoryRepository.GetEquipment(name, state, type, serialNumber, employeeName, invoiceId, vendor, manufacturer);
+            return await this.equipmentRepository.GetEquipmentAsync(name, state, type,
+                serialNumber, employeeName, invoiceId, vendor, manufacturer);
         }
     }
 }

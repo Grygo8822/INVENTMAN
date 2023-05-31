@@ -6,6 +6,8 @@
 @inject ISearchEmployeeByNameUseCase SearchEmployeeByNameUseCas
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Policy = "AllUsers")]
+
 @code {
 
 

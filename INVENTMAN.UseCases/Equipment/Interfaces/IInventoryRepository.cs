@@ -9,7 +9,11 @@ namespace INVENTMAN.UseCases.Equipment.Interfaces
 {
     public interface IEquipmentRepository
     {
-         Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
+        Task<IEnumerable<Item>> GetEquipmentAsync(string? name, EquipmentState? state,
+            EquipmentType? type, string? serialNumber,
+            string? employeeName, string? invoiceId,
+            string? vendor, string? manufacturer);
+        Task<IEnumerable<Item>> GetItemsByNameAsync(string name);
 
         Task AddItemAsync (Item item);
 
@@ -17,10 +21,7 @@ namespace INVENTMAN.UseCases.Equipment.Interfaces
 
         Task<Item> GetItemByIdAsync(Guid itemId);
 
-        Task<IEnumerable<Item>> GetEquipment(string? name, EquipmentState? state,
-            EquipmentType? type, string? serialNumber,
-            string? employeeName, string? invoiceId,
-            string? vendor, string? manufacturer);
+        
 
         
     }

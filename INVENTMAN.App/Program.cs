@@ -17,59 +17,60 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Docker");
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireAuthenticatedUser().RequireClaim("Users", "Adminstrate"));
-    options.AddPolicy("ItemEditors", policy => policy.RequireClaim("Items", "Edit"));
-    options.AddPolicy("ItemDeleters", policy => policy.RequireClaim("Items", "Delete"));
-    options.AddPolicy("ItemReaders", policy => policy.RequireClaim("Items", "Read"));
 
-
-
-});
-
-builder.Services.AddDbContextFactory<InventmanContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-
-
-builder.Services.AddScoped<IEquipmentRepository, EquipmentEFCoreRepository>();
-builder.Services.AddScoped<IManufacturersRepository, ManufacturerEFCoreRepository>();
-builder.Services.AddScoped<IVendorRepository, VendorEFCoreRepository>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeEFCoreRepository>();
-
-
-
-
-
+//Obs³uga uwierzytelniania i autoryzacji za pomoc¹ ASP.NET Core Identity
 builder.Services.AddDbContext<AccountDbContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedEmail = false;
+    options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<AccountDbContext>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserAdmin", policy => policy.RequireAuthenticatedUser()
+    .RequireClaim("Users", "Adminstrate"));
+    options.AddPolicy("ITAdminEdit", policy => policy.RequireClaim("Items", "Edit"));
+    options.AddPolicy("ITAdminCreate", policy => policy.RequireClaim("Items", "Create"));
+    options.AddPolicy("AllUsers", policy => policy.RequireClaim("All", "Read"));
+    options.AddPolicy("HRAdminCreate", policy => policy.RequireClaim("Employees", "Edit"));
+    options.AddPolicy("HRAdminEdit", policy => policy.RequireClaim("Employees", "Create"));
+
+});
+
+
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+// Obs³uga przechowania danych za pomoc¹ EF Core
+builder.Services.AddDbContextFactory<InventmanContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
+builder.Services.AddScoped<IManufacturersRepository, ManufacturerEFCoreRepository>();
+builder.Services.AddScoped<IVendorRepository, VendorEFCoreRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeEFCoreRepository>();
 
 //Equipment Use Cases
+
+builder.Services.AddScoped<IEquipmentRepository, EquipmentEFCoreRepository>();
+builder.Services.AddTransient<IEquipmentSearchAdvancedUseCase, EquipmentSearchAdvancedUseCase>();
+
 builder.Services.AddTransient<IEquipmentSearchUseCase, EquipmentSearchUseCase>();
 builder.Services.AddTransient<IEquipmentAddUseCase, EquipmentAddUseCase>();
 builder.Services.AddTransient<IEquipmentGetItemByIdUseCase, EquipmentGetItemByIdUseCase>();
 builder.Services.AddTransient<IEquipmentEditUseCase, EquipmentEditUseCase>();
-builder.Services.AddTransient<IEquipmentSearchAdvancedUseCase, EquipmentSearchAdvancedUseCase>();
-
 
 //Vendor Use Cases
 builder.Services.AddTransient<IAddVendorUseCase, AddVendorUseCase>();
 builder.Services.AddTransient<ISearchVendorByNameUseCase, SearchVendorByNameUseCase>();
-
 
 //Manufcaturer Use Cases
 builder.Services.AddTransient<IAddManufacturerUseCase, AddManufacturerUseCase>();

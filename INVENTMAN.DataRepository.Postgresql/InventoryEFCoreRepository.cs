@@ -28,7 +28,7 @@ namespace INVENTMAN.DataRepository.Postgresql
             await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Item>> GetEquipment(string? name, 
+        public async Task<IEnumerable<Item>> GetEquipmentAsync(string? name, 
             EquipmentState? state, EquipmentType? type,
             string? serialNumber, string? employeeName,
             string? invoiceId, string? vendor, string? manufacturer)

@@ -7,12 +7,12 @@
 @inject NavigationManager NavigationManager
 
 @code{
-    private AuthenticationState? authenticationState;
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationStateTask { get; set; }
-
     public List<Item> items { get; set; } = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        items = (await EquipmentSearchAdvancedUseCase.ExecuteAsync(null, null, null, null, null, null, null, null)).ToList();
+    }
 
     private async Task OnEquipmentSearch(ItemSearch itemSearch)
     {
@@ -34,13 +34,7 @@
         NavigationManager.NavigateTo("/equipment/add");
     }
 
-    protected async override Task OnInitializedAsync()
-    {
-        items = (await EquipmentSearchAdvancedUseCase.ExecuteAsync(null, null, null, null, null, null, null, null)).ToList();
-
-        if(authenticationStateTask != null)
-            authenticationState = await authenticationStateTask;
-    }
+    
 }
 
 <PageTitle>Sprzęt</PageTitle>
