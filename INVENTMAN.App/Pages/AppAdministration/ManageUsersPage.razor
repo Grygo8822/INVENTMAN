@@ -3,7 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
 
-@attribute [Authorize(Policy = "Admin")]
+@attribute [Authorize(Policy = "UserAdmin")]
 
 
 @inject NavigationManager NavigationManager
@@ -25,8 +25,15 @@
             <select id="subject" class="form-control"  @bind="viewModel.Subject">
                 <option value="null">Brak</option>
                 <option value="Adminstrate">Administrator</option>
+                <option value="Edit">Edit</option>
+                <option value="Create">Create</option>
+                <option value="Read">Read</option>
+
             </select>
         </div>
+        <InputText @bind-Value="viewModel.ClaimType"> 
+            
+        </InputText>
         <br/>
         <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
 
@@ -42,34 +49,30 @@
     [Parameter]
     public string? UserId { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
 
+    private async Task SaveUser()
+    {
         user = UserManager.Users.First(x => x.Id == this.UserId);
         var claims = await UserManager.GetClaimsAsync(user);
 
-        claim = claims.FirstOrDefault(x => x.Type == "Users");
+        claim = claims.FirstOrDefault(x => x.Type == viewModel.ClaimType);
         if (claim == null)
         {
             userHadClaim = false;
-            claim = new Claim("Users", string.Empty);
+            claim = new Claim(viewModel.ClaimType, string.Empty);
         }
 
         viewModel = new ManageUserViewModel
             {
                 Email = user.Email,
-                Subject = claim.Value
+                Subject = viewModel.Subject,
+                ClaimType = viewModel.ClaimType
             };
 
-    }
-
-    private async Task SaveUser()
-    {
         if (userHadClaim)
-            await UserManager.ReplaceClaimAsync(user, claim, new Claim("Users", viewModel.Subject));
+            await UserManager.ReplaceClaimAsync(user, claim, new Claim(viewModel.ClaimType, viewModel.Subject));
         else
-            await UserManager.AddClaimAsync(user, new Claim("Users", viewModel.Subject));
+            await UserManager.AddClaimAsync(user, new Claim(viewModel.ClaimType, viewModel.Subject));
 
         NavigationManager.NavigateTo("/users");
     }
@@ -80,5 +83,8 @@
 
         [Required]
         public string Subject { get; set; } = string.Empty;
+        [Required]
+        public string ClaimType { get; set; } = string.Empty;
+
     }
 }

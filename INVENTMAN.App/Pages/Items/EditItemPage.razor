@@ -30,7 +30,7 @@
 
     public Manufacturer manufacturerSelected { get; set; } = new();
     public Vendor vendorSelected { get; set; } = new();
-    public Employee employeeSelected { get; set; } = new();
+    public Employee? employeeSelected { get; set; } = new();
 
 
     private async Task EditItem()
@@ -89,7 +89,7 @@
 
     }
 
-    private void OnEmployeeSelected(Employee employee)
+    private void OnEmployeeSelected(Employee? employee)
     {
         employeeSelected = employee;
         ToggleEmployeeSelect();
@@ -217,7 +217,7 @@
     <div class="">
         <div class="form-group mb-1">
             <label> Pracownik </label>
-            <input type="text" class="border disabled form-control" value="@employeeSelected.Name @employeeSelected.Surname" readonly>
+            <input type="text" class="border disabled form-control" value="@employeeSelected?.Name @employeeSelected?.Surname" readonly>
             <button type="button" class="btn btn-outline-secondary form-control" @onclick="ToggleEmployeeSelect">Zmień</button>
 
         </div>

@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 
 
-@attribute [Authorize(Policy = "Admin")]
+@attribute [Authorize(Policy = "UserAdmin")]
 
 @inject UserManager<IdentityUser> UserManager
 @inject NavigationManager NavigationManager

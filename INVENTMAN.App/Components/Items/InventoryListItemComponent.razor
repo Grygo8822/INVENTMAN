@@ -21,7 +21,7 @@
                 }
 
             </td>
-            <td>@item.Vendor.Name</td>
+            <td>@item.Vendor?.Name</td>
             <td>@item.InvoiceId</td>
             <td>
                 <button class="btn btn-secondary" @onclick="@(()=> EditItem(item.ItemId))">Edytuj</button>

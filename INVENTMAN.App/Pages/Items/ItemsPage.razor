@@ -6,6 +6,8 @@
 @inject IEquipmentSearchAdvancedUseCase EquipmentSearchAdvancedUseCase
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Policy = "AllUsers")]
+
 @code{
     public List<Item> items { get; set; } = new();
 
@@ -37,18 +39,20 @@
     
 }
 
+
 <PageTitle>Sprzęt</PageTitle>
-<AdvancedSearchInventoryComponent OnItemSearchCallback="OnEquipmentSearch"></AdvancedSearchInventoryComponent>
+
+<button class="btn btn-primary"
+        type="button"
+        @onclick="AddItem">
+    Dodaj nowy przedmiot
+</button>
+
+<AdvancedSearchItemComponent OnItemSearchCallback="OnEquipmentSearch"></AdvancedSearchItemComponent>
 
 <InventoryListComponent items="items">
 </InventoryListComponent>
-<br />
 
-<button
-    class="btn-primary"
-    type="button"
-    @onclick="AddItem"
-    >Dodaj przedmiot</button>
 
 
 
